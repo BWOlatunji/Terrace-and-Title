@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hairline tokens as CSS custom properties too, for the rare place a plain
+   CSS value is more convenient than a Tailwind utility — see
+   docs/design-handoff.md Section 1.1. The color/radius/spacing scale itself
+   lives in tailwind.config.ts; this file does not duplicate it. */
+:root {
+  --hairline-08: rgba(0, 0, 0, 0.08);
+  --hairline-10: rgba(0, 0, 0, 0.1);
+  --hairline-15: rgba(0, 0, 0, 0.15);
+}
+
+body {
+  @apply bg-white text-slate font-sans antialiased;
+}

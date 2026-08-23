@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terrace &amp; Title Real Estate Advisory — Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,500;0,600;0,700;1,600&family=Geist:wght@400;500;600;700&family=Manrope:wght@700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===================== TOKENS ===================== */
+:root{
+  --navy:#0F2D52;
+  --navy-light:#1A4174;
+  --gold:#C8A96A;
+  --gold-light:#DDC596;
+  --green:#2E6B4A;
+  --terracotta:#B86A4F;
+  --slate:#4E5B68;
+  --mist:#F5F7FA;
+  --white:#FFFFFF;
+  --paper:#FBF8F3;
+  --micro:#8A93A0;
+  --hair-08:rgba(0,0,0,0.08);
+  --hair-10:rgba(0,0,0,0.10);
+  --hair-15:rgba(0,0,0,0.15);
+  --radius:2px;
+  --container:1280px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;font-family:'Geist',sans-serif;color:var(--slate);background:var(--white);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:'Source Serif 4',serif;color:var(--navy);font-weight:500;line-height:1.16;margin:0;}
+h3,h4{font-weight:600;}
+p{margin:0;}
+a{color:inherit;}
+ul{margin:0;padding:0;list-style:none;}
+button{font-family:inherit;}
+img,svg{display:block;max-width:100%;}
+.mono{font-family:'IBM Plex Mono',monospace;}
+.eyebrow{font-family:'Manrope',sans-serif;font-weight:800;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;}
+.eyebrow.gold{color:var(--gold);}
+.eyebrow.terracotta{color:var(--terracotta);}
+.eyebrow.navy{color:var(--navy);}
+.micro{font-family:'Manrope',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--micro);}
+.container{max-width:var(--container);margin:0 auto;padding:0 24px;}
+.section{padding:88px 0;}
+.section.tight{padding:64px 0;}
+.bg-mist{background:var(--mist);}
+.bg-navy{background:var(--navy);color:#fff;}
+.bg-navy h1,.bg-navy h2,.bg-navy h3,.bg-navy h4{color:#fff;}
+.bg-paper{background:var(--paper);}
+hr.hair{border:none;border-top:1px solid var(--hair-10);}
+
+/* ===================== BUTTONS ===================== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:16px 30px;border-radius:var(--radius);font-weight:600;font-size:14px;cursor:pointer;border:1px solid transparent;text-decoration:none;transition:all .15s ease;white-space:nowrap;}
+.btn-primary{background:var(--navy);color:#fff;}
+.btn-primary:hover{background:var(--navy-light);}
+.btn-gold{background:var(--gold);color:var(--navy);}
+.btn-gold:hover{background:var(--gold-light);}
+.btn-outline{background:transparent;border-color:rgba(15,45,82,.32);color:var(--navy);}
+.btn-outline:hover{border-color:var(--navy);background:rgba(15,45,82,.05);}
+.btn-outline-light{background:transparent;border-color:rgba(255,255,255,.4);color:#fff;}
+.btn-outline-light:hover{border-color:#fff;background:rgba(255,255,255,.08);}
+.btn-text{background:none;border:none;padding:0;color:var(--terracotta);font-weight:600;font-size:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;}
+.btn-block{width:100%;}
+.btn-sm{padding:11px 20px;font-size:13px;}
+
+/* ===================== HEADER / NAV ===================== */
+.site-header{position:sticky;top:0;z-index:200;height:76px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--hair-08);}
+.site-header .container{height:76px;display:flex;align-items:center;justify-content:space-between;}
+.logo-lockup{display:flex;flex-direction:column;gap:2px;cursor:pointer;text-decoration:none;}
+.logo-lockup .mark-row{display:flex;align-items:center;gap:8px;}
+.logo-lockup .mark-img{height:36px;width:auto;flex-shrink:0;display:block;}
+.logo-lockup .word{font-family:'Source Serif 4';font-weight:600;font-size:19px;color:var(--navy);letter-spacing:.01em;}
+.logo-lockup .word .amp{color:var(--gold);font-style:italic;}
+.logo-lockup .sub{font-family:'Manrope';font-weight:800;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--micro);padding-left:44px;}
+.nav-links{display:flex;align-items:center;gap:36px;}
+.nav-links a{text-decoration:none;color:var(--navy);font-size:14px;font-weight:500;padding:6px 0;border-bottom:2px solid transparent;}
+.nav-links a:hover,.nav-links a.active{border-bottom-color:var(--gold);}
+.nav-right{display:flex;align-items:center;gap:24px;}
+.portal-link{font-size:14px;font-weight:600;color:var(--navy);text-decoration:none;border-bottom:1px solid var(--hair-15);padding-bottom:2px;}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:8px;}
+.burger span{width:22px;height:2px;background:var(--navy);display:block;}
+
+.mobile-drawer{position:fixed;inset:0;background:var(--paper);z-index:500;display:none;flex-direction:column;padding:24px;overflow-y:auto;}
+.mobile-drawer.open{display:flex;}
+.mobile-drawer .drawer-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:48px;}
+.drawer-close{background:none;border:none;font-size:28px;font-family:'Geist';color:var(--navy);cursor:pointer;line-height:1;}
+.mobile-drawer .nav-links{flex-direction:column;align-items:flex-start;gap:8px;}
+.mobile-drawer .nav-links a{font-family:'Source Serif 4';font-size:28px;font-weight:500;border-bottom:none;padding:10px 0;}
+.mobile-drawer .drawer-ctas{margin-top:40px;display:flex;flex-direction:column;gap:14px;}
+.mobile-drawer .portal-link{font-size:16px;}
+
+/* ===================== FOOTER ===================== */
+.site-footer{background:var(--navy);color:#fff;padding:72px 0 0;}
+.footer-top{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:48px;padding-bottom:56px;border-bottom:1px solid rgba(255,255,255,.12);}
+.footer-brand .logo-lockup .word{color:#fff;}
+.footer-tagline{font-family:'Source Serif 4';font-style:italic;font-weight:600;font-size:19px;color:var(--gold-light);margin-top:16px;max-width:280px;}
+.footer-col h4{font-family:'Manrope';font-weight:800;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+.footer-col a{display:block;color:rgba(255,255,255,.72);text-decoration:none;font-size:14px;margin-bottom:12px;}
+.footer-col a:hover{color:#fff;}
+.footer-note-form{display:flex;gap:0;margin-top:6px;border:1px solid rgba(255,255,255,.24);border-radius:var(--radius);overflow:hidden;}
+.footer-note-form input{flex:1;background:transparent;border:none;padding:12px 14px;color:#fff;font-size:13px;font-family:'Geist';}
+.footer-note-form input::placeholder{color:rgba(255,255,255,.5);}
+.footer-note-form button{background:var(--gold);color:var(--navy);border:none;padding:0 18px;font-weight:700;font-size:13px;cursor:pointer;}
+.footer-bottom{display:flex;justify-content:space-between;padding:24px 0;font-size:12px;color:rgba(255,255,255,.55);}
+
+/* ===================== HERO ===================== */
+.hero{background:var(--paper);padding:72px 0 0;overflow:hidden;}
+.hero-grid{display:grid;grid-template-columns:1fr 460px;gap:64px;align-items:center;}
+.hero h1{font-size:64px;margin:18px 0 22px;}
+.hero p.lede{font-size:17px;max-width:480px;margin-bottom:34px;color:var(--slate);}
+.hero-ctas{display:flex;gap:16px;margin-bottom:64px;flex-wrap:wrap;}
+.hero-visual{position:relative;padding-bottom:24px;}
+.hero-visual .ph-img{aspect-ratio:3/4;}
+.hero-card{position:absolute;left:-40px;bottom:0;background:#fff;padding:20px 22px;box-shadow:0 14px 40px rgba(15,45,82,.16);width:230px;border-radius:var(--radius);}
+.hero-card .figure{font-size:26px;font-weight:600;color:var(--navy);margin-top:8px;}
+
+/* ===================== PLACEHOLDER IMAGES ===================== */
+.ph-img{position:relative;background-image:repeating-linear-gradient(135deg,#e6eaee 0px,#e6eaee 11px,#eef1f5 11px,#eef1f5 22px);display:flex;align-items:flex-end;overflow:hidden;border-radius:var(--radius);}
+.ph-img.dark{background-image:repeating-linear-gradient(135deg,#0c2645 0px,#0c2645 11px,#123457 11px,#123457 22px);}
+.ph-cap{font-family:'IBM Plex Mono';font-size:10.5px;color:var(--slate);background:rgba(255,255,255,.88);padding:6px 10px;margin:10px;letter-spacing:.01em;line-height:1.4;}
+.ph-img.dark .ph-cap{background:rgba(255,255,255,.14);color:#fff;}
+
+/* ===================== DATA STRIP ===================== */
+.data-strip{border-top:1px solid var(--hair-08);border-bottom:1px solid var(--hair-08);}
+.data-strip-grid{display:grid;grid-template-columns:repeat(4,1fr);}
+.data-cell{padding:32px 28px;border-left:1px solid var(--hair-08);}
+.data-cell:first-child{border-left:none;}
+.data-cell .figure{font-size:30px;font-weight:600;color:var(--navy);margin:10px 0 6px;}
+.data-cell .delta{font-size:13px;font-weight:600;}
+.delta.up{color:var(--green);}
+.delta.down{color:var(--terracotta);}
+
+/* ===================== VERIFICATION BAND ===================== */
+.verify-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;}
+.verify-card{border:1px solid var(--hair-10);border-top:3px solid var(--gold);padding:32px 26px;border-radius:var(--radius);}
+.verify-card .num{font-family:'IBM Plex Mono';font-size:13px;color:var(--gold);display:block;margin-bottom:14px;}
+.verify-card h4{font-size:19px;margin-bottom:10px;}
+.verify-card p{font-size:14.5px;color:var(--slate);}
+.verify-note{margin-top:32px;padding:20px 24px;background:var(--mist);border-left:3px solid var(--terracotta);font-size:14.5px;border-radius:var(--radius);}
+
+/* ===================== MARKET BAND (chart) ===================== */
+.market-band-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:56px;align-items:start;margin-top:40px;}
+.chart-legend{display:flex;gap:22px;margin-bottom:18px;}
+.legend-item{display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono';font-size:12px;color:rgba(255,255,255,.8);}
+.legend-swatch{width:16px;height:2px;}
+.chart-svg{width:100%;height:auto;overflow:visible;}
+.chart-axis{font-family:'IBM Plex Mono';font-size:11px;fill:rgba(255,255,255,.55);}
+.chart-axis.light{fill:var(--slate);}
+.bar-row{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.12);}
+.bar-row:last-child{border-bottom:none;}
+.bar-row .bname{width:96px;font-size:13px;flex-shrink:0;}
+.bar-row .bval{width:78px;text-align:right;font-family:'IBM Plex Mono';font-size:13px;flex-shrink:0;}
+.bar-track{flex:1;height:8px;background:rgba(255,255,255,.12);border-radius:99px;overflow:hidden;}
+.bar-fill{height:100%;background:var(--gold);border-radius:99px;}
+
+/* ===================== CARDS: LISTINGS ===================== */
+.card-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.listing-card{border:1px solid var(--hair-10);border-radius:var(--radius);overflow:hidden;background:#fff;cursor:pointer;transition:box-shadow .18s ease,transform .18s ease;text-decoration:none;color:inherit;display:block;}
+.listing-card:hover{box-shadow:0 16px 36px rgba(15,45,82,.14);transform:translateY(-2px);}
+.listing-card .ph-img{aspect-ratio:4/3;border-radius:0;}
+.listing-card .lc-body{padding:22px 22px 0;}
+.listing-card h3{font-size:20px;margin:10px 0 4px;}
+.listing-card .lc-loc{font-size:13px;color:var(--slate);}
+.lc-footer{display:flex;border-top:1px solid var(--hair-10);margin-top:18px;}
+.lc-stat{flex:1;padding:16px 18px;border-left:1px solid var(--hair-10);}
+.lc-stat:first-child{border-left:none;}
+.lc-stat .micro{display:block;margin-bottom:6px;}
+.lc-stat .val{font-family:'IBM Plex Mono';font-size:14px;color:var(--navy);font-weight:600;}
+.lc-spark-row{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-top:1px solid var(--hair-10);}
+.lc-spark-row .spark-trend{font-family:'IBM Plex Mono';font-size:12px;}
+
+.seal{position:absolute;top:12px;left:12px;background:#fff;border:1px dashed var(--gold);border-radius:999px;padding:6px 12px 6px 9px;display:flex;align-items:center;gap:6px;font-family:'Manrope';font-weight:800;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);z-index:2;}
+.seal .dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.seal.pending{border-color:var(--terracotta);color:var(--terracotta);}
+.seal.pending .dot{background:var(--terracotta);}
+
+/* horizontal listing card (opportunities / portal shortlist) */
+.listing-card-h{display:flex;border:1px solid var(--hair-10);border-radius:var(--radius);overflow:hidden;background:#fff;cursor:pointer;text-decoration:none;color:inherit;transition:box-shadow .18s ease;margin-bottom:20px;}
+.listing-card-h:hover{box-shadow:0 16px 36px rgba(15,45,82,.14);}
+.listing-card-h .ph-img{width:212px;flex-shrink:0;border-radius:0;aspect-ratio:auto;}
+.lch-body{flex:1;padding:22px 26px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;}
+.lch-top h3{font-size:21px;margin:8px 0 4px;}
+.lch-top .lc-loc{font-size:13px;}
+.lch-stats{display:flex;gap:36px;margin-top:16px;flex-wrap:wrap;}
+.lch-stats .stat .micro{display:block;margin-bottom:5px;}
+.lch-stats .stat .val{font-family:'IBM Plex Mono';font-size:15px;color:var(--navy);font-weight:600;}
+
+/* ===================== PAGE HEADER BANDS ===================== */
+.page-header{background:var(--mist);padding:56px 0;}
+.page-header h1{font-size:38px;margin-top:12px;}
+.page-header .count{color:var(--slate);font-weight:400;font-family:'IBM Plex Mono';font-size:26px;}
+
+/* ===================== OPPORTUNITIES LAYOUT ===================== */
+.opps-layout{display:grid;grid-template-columns:264px 1fr;gap:36px;align-items:start;padding:56px 0;}
+.filter-rail{position:sticky;top:96px;border:1px solid var(--hair-10);border-radius:var(--radius);padding:26px 22px;background:#fff;}
+.filter-rail h4{font-size:15px;margin-bottom:20px;}
+.filter-group{margin-bottom:24px;}
+.filter-group label.flabel{display:block;font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:8px;}
+.filter-group select,.filter-group input[type=number],.filter-group input[type=text],.filter-group input[type=date],.filter-group input[type=email],.filter-group input[type=password]{width:100%;padding:11px 12px;border:1px solid var(--hair-15);border-radius:var(--radius);font-family:'Geist';font-size:14px;background:#fff;color:var(--navy);}
+.range-inputs{display:flex;gap:8px;}
+.checkbox-row{display:flex;align-items:flex-start;gap:9px;margin-bottom:12px;font-size:13.5px;}
+.checkbox-row input{margin-top:3px;}
+.results-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.results-bar .rcount{font-size:14px;color:var(--slate);}
+.sort-select{padding:9px 12px;border:1px solid var(--hair-15);border-radius:var(--radius);font-size:13px;font-family:'Geist';}
+
+/* ===================== LISTING DETAIL ===================== */
+.detail-cover{position:relative;height:440px;border-radius:0;overflow:hidden;}
+.detail-cover .ph-img{height:100%;border-radius:0;}
+.detail-scrim{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,45,82,.92) 0%,rgba(15,45,82,.35) 55%,rgba(15,45,82,0) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:40px 0;}
+.detail-scrim .container{width:100%;}
+.detail-scrim h1{color:#fff;font-size:42px;margin:14px 0 6px;}
+.detail-scrim .loc{color:rgba(255,255,255,.82);font-size:15px;}
+.detail-layout{display:grid;grid-template-columns:1fr 380px;gap:56px;padding:56px 0;align-items:start;}
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--hair-10);border-radius:var(--radius);margin-bottom:48px;}
+.stats-strip .stat{padding:20px 20px;border-left:1px solid var(--hair-10);}
+.stats-strip .stat:first-child{border-left:none;}
+.stats-strip .stat .val{font-family:'IBM Plex Mono';font-size:19px;color:var(--navy);font-weight:600;margin-top:8px;}
+.stats-strip .stat .sub{font-size:12px;color:var(--slate);margin-top:4px;}
+.detail-block{margin-bottom:48px;}
+.detail-block h3{font-size:22px;margin-bottom:18px;}
+.doc-table{width:100%;border-collapse:collapse;}
+.doc-table th{text-align:left;font-family:'Manrope';font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--micro);padding:0 0 12px;border-bottom:1px solid var(--hair-10);}
+.doc-table td{padding:16px 0;border-bottom:1px solid var(--hair-08);font-size:14.5px;}
+.status-word{font-family:'IBM Plex Mono';font-size:13px;font-weight:600;padding:4px 10px;border-radius:99px;display:inline-block;}
+.status-word.verified{color:var(--green);background:rgba(46,107,74,.08);}
+.status-word.progress{color:var(--gold);background:rgba(200,169,106,.14);}
+.status-word.pending{color:var(--terracotta);background:rgba(184,106,79,.1);}
+.disclaimer-box{display:flex;gap:14px;background:var(--mist);padding:22px 24px;border-radius:var(--radius);}
+.disclaimer-box .mark{color:var(--terracotta);font-family:'IBM Plex Mono';font-weight:700;font-size:18px;flex-shrink:0;}
+.disclaimer-box p{font-size:13.5px;color:var(--slate);}
+
+.sidebar-card{border:1px solid var(--hair-10);border-radius:var(--radius);padding:26px 24px;margin-bottom:24px;background:#fff;}
+.advisor-head{display:flex;gap:14px;align-items:center;margin-bottom:18px;}
+.avatar{width:52px;height:52px;border-radius:50%;background:var(--mist);background-image:repeating-linear-gradient(135deg,#e6eaee 0px,#e6eaee 6px,#eef1f5 6px,#eef1f5 12px);flex-shrink:0;}
+.advisor-head .aname{font-family:'Source Serif 4';font-weight:600;font-size:17px;color:var(--navy);}
+.advisor-head .apatch{font-size:12px;color:var(--slate);margin-top:2px;}
+.form-field{margin-bottom:16px;}
+.form-field label{display:block;font-size:12.5px;font-weight:600;color:var(--navy);margin-bottom:7px;}
+.form-field input,.form-field select,.form-field textarea{width:100%;padding:12px 13px;border:1px solid var(--hair-15);border-radius:var(--radius);font-family:'Geist';font-size:14px;color:var(--navy);background:#fff;}
+.form-field textarea{resize:vertical;min-height:90px;}
+.dev-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(46,107,74,.1);color:var(--green);font-family:'Manrope';font-weight:800;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:99px;margin-bottom:14px;}
+.dev-stat-row{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--hair-08);font-size:13px;}
+.dev-stat-row .val{font-family:'IBM Plex Mono';font-weight:600;color:var(--navy);}
+
+/* ===================== MARKET HUB ===================== */
+.market-header-band{background:var(--navy);color:#fff;padding:64px 0;}
+.index-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:36px;border-top:1px solid rgba(255,255,255,.14);}
+.index-cell{padding:24px 28px 0;border-left:1px solid rgba(255,255,255,.14);}
+.index-cell:first-child{border-left:none;}
+.index-cell .val{font-family:'IBM Plex Mono';font-size:30px;font-weight:600;margin-top:10px;}
+.hub-layout{display:grid;grid-template-columns:1fr 340px;gap:56px;padding:64px 0;align-items:start;}
+.price-table{width:100%;border-collapse:collapse;}
+.price-table th{text-align:left;font-family:'Manrope';font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--micro);padding:0 12px 14px 0;border-bottom:1px solid var(--hair-10);}
+.price-table td{padding:18px 12px 18px 0;border-bottom:1px solid var(--hair-08);font-family:'IBM Plex Mono';font-size:14px;color:var(--navy);}
+.price-table td.dname{font-family:'Geist';font-weight:600;color:var(--navy);}
+.price-table td.qoq.up{color:var(--green);}
+.report-card{background:var(--mist);border-radius:var(--radius);padding:24px;margin-bottom:24px;}
+.article-link{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--hair-08);font-size:14px;text-decoration:none;color:var(--navy);font-weight:500;}
+.article-link:last-child{border-bottom:none;}
+.article-link span.arrow{color:var(--terracotta);}
+
+/* ===================== PRICE CHECK ===================== */
+.pc-layout{display:grid;grid-template-columns:400px 1fr;gap:48px;padding:56px 0;align-items:start;}
+.pc-result-panel{background:rgba(200,169,106,.08);border:1px solid var(--gold);border-radius:var(--radius);padding:36px;margin-bottom:24px;}
+.pc-result-panel .val{font-family:'IBM Plex Mono';font-size:44px;font-weight:600;color:var(--navy);margin:12px 0 6px;}
+.pc-two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+.pc-card{border:1px solid var(--hair-10);border-radius:var(--radius);padding:22px;}
+.pc-card .val{font-family:'IBM Plex Mono';font-size:20px;color:var(--navy);font-weight:600;margin-top:8px;}
+.pc-cta-strip{background:var(--navy);color:#fff;border-radius:var(--radius);padding:30px 32px;display:flex;justify-content:space-between;align-items:center;gap:24px;margin-bottom:24px;flex-wrap:wrap;}
+.pc-disclaimer{font-size:12.5px;color:var(--slate);}
+
+/* ===================== CONTACT ===================== */
+.contact-layout{display:grid;grid-template-columns:1fr 320px;gap:48px;padding:56px 0;align-items:start;}
+.contact-card{border:1px solid var(--hair-10);border-radius:var(--radius);padding:40px;}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--hair-10);margin-bottom:32px;}
+.tab-btn{background:none;border:none;padding:12px 0;margin-right:36px;font-size:15px;font-weight:600;color:var(--slate);cursor:pointer;border-bottom:2px solid transparent;position:relative;top:1px;}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--gold);}
+.form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.mode-options{display:flex;gap:10px;flex-wrap:wrap;}
+.mode-opt{border:1px solid var(--hair-15);border-radius:99px;padding:9px 16px;font-size:13px;cursor:pointer;}
+.mode-opt.sel{border-color:var(--navy);background:var(--navy);color:#fff;}
+.virtual-note{font-size:13px;color:var(--slate);margin-top:10px;background:var(--mist);padding:12px 14px;border-radius:var(--radius);}
+.consent-row{display:flex;gap:10px;align-items:flex-start;margin:22px 0;font-size:13.5px;}
+.side-office h4{font-size:15px;margin-bottom:14px;}
+.office-line{font-size:14px;margin-bottom:8px;color:var(--slate);}
+.direct-contact{font-family:'IBM Plex Mono';font-size:14px;color:var(--navy);margin:14px 0;line-height:1.9;}
+
+/* ===================== PORTAL LOGIN ===================== */
+.portal-login-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;}
+.pl-form-col{background:var(--paper);display:flex;align-items:center;justify-content:center;padding:40px;}
+.pl-form-inner{width:100%;max-width:360px;}
+.pl-back{font-size:13px;color:var(--slate);text-decoration:none;display:inline-block;margin-top:26px;}
+.pl-panel{background:var(--navy);color:#fff;display:flex;align-items:center;padding:64px;position:relative;}
+.pl-panel-inner{max-width:400px;}
+.pl-panel h2{color:#fff;font-size:32px;font-style:italic;font-weight:600;margin-bottom:48px;}
+.pl-figure{margin-bottom:28px;}
+.pl-figure .val{font-family:'IBM Plex Mono';font-size:26px;font-weight:600;color:var(--gold-light);}
+.pl-figure .lbl{font-size:13px;color:rgba(255,255,255,.7);margin-top:4px;}
+
+/* ===================== PORTAL SHELL ===================== */
+.portal-shell{min-height:100vh;background:var(--mist);display:flex;flex-direction:column;}
+.portal-topbar{height:66px;background:#fff;border-bottom:1px solid var(--hair-08);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;}
+.portal-back{font-size:13px;color:var(--slate);text-decoration:none;}
+.portal-body{display:flex;flex:1;}
+.portal-sidebar{width:212px;flex-shrink:0;padding:32px 16px;}
+.portal-signedin{padding:0 12px 20px;}
+.portal-signedin .micro{display:block;margin-bottom:4px;}
+.portal-signedin .name{font-family:'Source Serif 4';font-weight:600;font-size:16px;color:var(--navy);}
+.portal-nav a{display:block;padding:12px 16px;border-radius:99px;color:var(--slate);text-decoration:none;font-size:14px;font-weight:500;margin-bottom:4px;}
+.portal-nav a.active{background:#fff;color:var(--navy);font-weight:600;box-shadow:0 1px 3px rgba(15,45,82,.08);}
+.portal-signout{margin-top:24px;padding:0 16px;}
+.portal-signout a{color:var(--terracotta);font-size:13px;font-weight:600;text-decoration:none;}
+.portal-content{flex:1;padding:44px 40px;min-width:0;}
+.portal-content h1{font-size:32px;margin-bottom:32px;}
+.stat-card-row{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px;}
+.stat-card{background:#fff;border:1px solid var(--hair-10);border-radius:var(--radius);padding:22px;}
+.stat-card .val{font-family:'IBM Plex Mono';font-size:26px;font-weight:600;color:var(--navy);margin-top:8px;}
+.dash-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:start;}
+.panel-card{background:#fff;border:1px solid var(--hair-10);border-radius:var(--radius);padding:28px;}
+.panel-card h3{font-size:18px;margin-bottom:24px;}
+.tracker-row{display:flex;align-items:center;}
+.tracker-stage{flex:1;text-align:center;position:relative;}
+.tracker-dot{width:14px;height:14px;border-radius:50%;margin:0 auto 10px;background:#D8DEE4;}
+.tracker-stage.done .tracker-dot{background:var(--green);}
+.tracker-stage.current .tracker-dot{background:var(--gold);box-shadow:0 0 0 4px rgba(200,169,106,.22);}
+.tracker-line{position:absolute;top:6px;height:2px;background:#D8DEE4;left:-50%;width:100%;z-index:-1;}
+.tracker-stage.done .tracker-line,.tracker-stage.current .tracker-line{background:var(--green);}
+.tracker-stage:first-child .tracker-line{display:none;}
+.tracker-label{font-size:12px;font-weight:600;color:var(--slate);}
+.tracker-stage.done .tracker-label,.tracker-stage.current .tracker-label{color:var(--navy);}
+.tracker-note{margin-top:22px;padding:14px 16px;background:var(--mist);border-radius:var(--radius);font-size:13px;color:var(--slate);}
+.watch-district{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.watch-price{font-family:'IBM Plex Mono';font-size:22px;font-weight:600;color:var(--navy);margin-bottom:14px;}
+
+.record-list-item{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-bottom:1px solid var(--hair-08);gap:20px;}
+.record-list-item:last-child{border-bottom:none;}
+.record-main .rtitle{font-weight:600;color:var(--navy);font-size:15px;margin-bottom:4px;}
+.record-main .rmeta{font-size:12.5px;color:var(--slate);}
+.pill{font-family:'IBM Plex Mono';font-size:12px;font-weight:600;padding:5px 13px;border-radius:99px;white-space:nowrap;}
+.pill.gold{background:rgba(200,169,106,.16);color:#8a6d34;}
+.pill.navy{background:var(--navy);color:#fff;}
+.pill.green{background:rgba(46,107,74,.1);color:var(--green);}
+.pill.grey{background:#E7EAED;color:var(--slate);}
+.pill.terracotta{background:rgba(184,106,79,.12);color:var(--terracotta);}
+.upload-card{border:1px dashed var(--hair-15);border-radius:var(--radius);padding:28px;text-align:center;margin-top:28px;}
+.drop-area{border:1px dashed var(--hair-15);border-radius:var(--radius);padding:34px;text-align:center;font-size:13px;color:var(--slate);margin:16px 0;}
+
+/* ===================== PLACEHOLDER PAGE ===================== */
+.placeholder-page{padding:120px 0;text-align:center;}
+.placeholder-page .ph-box{max-width:520px;margin:0 auto;background:var(--mist);padding:56px 40px;border-radius:var(--radius);}
+.placeholder-page h1{font-size:30px;margin:14px 0 12px;}
+
+/* ===================== MISC UTIL ===================== */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+.stack-gap-md > * + *{margin-top:16px;}
+.center-cta{text-align:center;}
+.section-head{max-width:640px;margin-bottom:16px;}
+.section-head h2{font-size:34px;margin-top:12px;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.service-card{border:1px solid var(--hair-10);border-radius:var(--radius);padding:32px 26px;}
+.service-card h3{font-size:19px;margin:14px 0 10px;}
+.service-card p{font-size:14px;color:var(--slate);}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--hair-10);border-radius:var(--radius);margin-top:24px;}
+.about-stats .cell{padding:26px 24px;border-left:1px solid var(--hair-10);}
+.about-stats .cell:first-child{border-left:none;}
+.about-stats .val{font-family:'IBM Plex Mono';font-size:26px;font-weight:600;color:var(--navy);margin-top:8px;}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width:1080px){
+  .site-header .nav-links,.nav-right .portal-link,.nav-right .btn{display:none;}
+  .burger{display:flex;}
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-visual{margin-top:40px;}
+  .hero-card{left:20px;}
+  .data-strip-grid{grid-template-columns:repeat(2,1fr);}
+  .data-cell:nth-child(3){border-left:none;}
+  .data-cell{border-bottom:1px solid var(--hair-08);}
+  .verify-grid{grid-template-columns:1fr;}
+  .market-band-grid{grid-template-columns:1fr;gap:36px;}
+  .card-grid-3{grid-template-columns:repeat(2,1fr);}
+  .opps-layout{grid-template-columns:1fr;}
+  .filter-rail{position:static;}
+  .detail-layout{grid-template-columns:1fr;}
+  .hub-layout{grid-template-columns:1fr;}
+  .index-grid{grid-template-columns:repeat(2,1fr);}
+  .index-cell:nth-child(3){border-left:none;}
+  .index-cell{padding-bottom:20px;}
+  .pc-layout{grid-template-columns:1fr;}
+  .contact-layout{grid-template-columns:1fr;}
+  .portal-login-wrap{grid-template-columns:1fr;}
+  .pl-panel{display:none;}
+  .footer-top{grid-template-columns:1fr 1fr;row-gap:40px;}
+  .dash-grid{grid-template-columns:1fr;}
+  .services-grid{grid-template-columns:repeat(2,1fr);}
+  .about-stats{grid-template-columns:1fr;}
+  .about-stats .cell{border-left:none;border-top:1px solid var(--hair-10);}
+  .about-stats .cell:first-child{border-top:none;}
+  .listing-card-h{flex-direction:column;}
+  .listing-card-h .ph-img{width:100%;aspect-ratio:16/9;}
+  .portal-body{flex-direction:column;}
+  .portal-sidebar{width:100%;padding:16px;}
+  .portal-nav{display:flex;overflow-x:auto;gap:6px;}
+  .portal-nav a{white-space:nowrap;}
+  .portal-signedin{display:none;}
+  .portal-signout{margin-top:12px;}
+}
+@media (max-width:700px){
+  .hero h1{font-size:40px;}
+  .container{padding:0 20px;}
+  .section{padding:56px 0;}
+  .data-strip-grid{grid-template-columns:1fr;}
+  .data-cell{border-left:none;}
+  .card-grid-3{grid-template-columns:1fr;}
+  .stats-strip{grid-template-columns:1fr 1fr;}
+  .stats-strip .stat:nth-child(3){border-left:none;}
+  .stats-strip .stat{border-bottom:1px solid var(--hair-10);}
+  .index-grid{grid-template-columns:1fr;}
+  .index-cell{border-left:none;border-top:1px solid rgba(255,255,255,.14);padding-top:20px;}
+  .index-cell:first-child{border-top:none;}
+  .pc-two-col{grid-template-columns:1fr;}
+  .form-grid-2{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;gap:8px;}
+  .services-grid{grid-template-columns:1fr;}
+  .lch-stats{gap:20px;}
+  .pc-cta-strip{flex-direction:column;align-items:flex-start;}
+  .stat-card-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header" id="site-header">
+  <div class="container">
+    <a href="#home" class="logo-lockup">
+      <div class="mark-row">
+        <img src="logo.png" alt="Terrace &amp; Title" class="mark-img">
+        <span class="word">Terrace <span class="amp">&amp;</span> Title</span>
+      </div>
+      <span class="sub">Real Estate Advisory</span>
+    </a>
+    <nav class="nav-links" id="nav-links">
+      <a href="#home" data-route="home">Home</a>
+      <a href="#opportunities" data-route="opportunities">Opportunities</a>
+      <a href="#market" data-route="market">Market Intelligence</a>
+      <a href="#about" data-route="about">About</a>
+      <a href="#services" data-route="services">Services</a>
+      <a href="#contact" data-route="contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a href="#portal-login" class="portal-link">Client Portal</a>
+      <a href="#contact" class="btn btn-primary btn-sm">Speak to an Advisor</a>
+      <button class="burger" id="burger-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-drawer" id="mobile-drawer">
+  <div class="drawer-top">
+    <a href="#home" class="logo-lockup">
+      <div class="mark-row"><img src="logo.png" alt="Terrace &amp; Title" class="mark-img"><span class="word">Terrace <span class="amp">&amp;</span> Title</span></div>
+    </a>
+    <button class="drawer-close" id="drawer-close" aria-label="Close menu">&times;</button>
+  </div>
+  <nav class="nav-links">
+    <a href="#home" data-route="home">Home</a>
+    <a href="#opportunities" data-route="opportunities">Opportunities</a>
+    <a href="#market" data-route="market">Market Intelligence</a>
+    <a href="#about" data-route="about">About</a>
+    <a href="#services" data-route="services">Services</a>
+    <a href="#contact" data-route="contact">Contact</a>
+  </nav>
+  <div class="drawer-ctas">
+    <a href="#portal-login" class="portal-link">Client Portal</a>
+    <a href="#contact" class="btn btn-primary btn-block">Speak to an Advisor</a>
+  </div>
+</div>
+
+<main id="app"></main>
+
+<footer class="site-footer" id="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo-lockup">
+          <div class="mark-row"><img src="logo.png" alt="Terrace &amp; Title" class="mark-img"><span class="word">Terrace <span class="amp">&amp;</span> Title</span></div>
+          <span class="sub" style="color:rgba(255,255,255,.55)">Real Estate Advisory</span>
+        </div>
+        <p class="footer-tagline">Invest with confidence. Own with pride.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="#opportunities" data-route="opportunities">Opportunities</a>
+        <a href="#market" data-route="market">Market Intelligence</a>
+        <a href="#price-check" data-route="price-check">Price Check</a>
+        <a href="#about" data-route="about">About Us</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#services" data-route="services">Services</a>
+        <a href="#careers" data-route="careers">Careers</a>
+        <a href="#press" data-route="press">Press</a>
+        <a href="#contact" data-route="contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#buying-guide" data-route="buying-guide">Buying Guide</a>
+        <a href="#diaspora-guide" data-route="diaspora-guide">Diaspora Guide</a>
+        <a href="#faqs" data-route="faqs">FAQs</a>
+        <a href="#portal-login" data-route="portal-login">Client Portal</a>
+      </div>
+    </div>
+    <div style="padding:40px 0;border-bottom:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;">
+      <div>
+        <h4 style="font-family:'Manrope';font-weight:800;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Quarterly Market Note</h4>
+        <p style="font-size:13px;color:rgba(255,255,255,.65);max-width:320px;">District pricing, one page, every quarter. No spam, no gating on the data itself.</p>
+      </div>
+      <form class="footer-note-form" style="max-width:340px;flex:1;" onsubmit="event.preventDefault();this.querySelector('button').textContent='Requested';">
+        <input type="email" placeholder="you@email.com" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <div class="container" style="padding-left:0;padding-right:0;">
+      <div class="footer-bottom">
+        <span>&copy; 2026 Terrace &amp; Title Real Estate Advisory Ltd. All rights reserved.</span>
+        <span class="mono">Abuja, Federal Capital Territory, Nigeria</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===================================================================
+   DATA
+=================================================================== */
+const QUARTERS = ["Q3 '25","Q4 '25","Q1 '26","Q2 '26"];
+
+const DISTRICTS = [
+  {name:"Maitama",  tier:"prime",     land:412000, residential:385000, qoq:3.8, trend:[372000,385000,396000,412000]},
+  {name:"Asokoro",  tier:"prime",     land:398000, residential:360000, qoq:2.9, trend:[365000,378000,388000,398000]},
+  {name:"Jabi",     tier:"suburban",  land:210000, residential:195000, qoq:4.1, trend:[186000,194000,202000,210000]},
+  {name:"Gwarinpa", tier:"suburban",  land:145000, residential:138000, qoq:1.6, trend:[137000,140000,143000,145000]},
+  {name:"Lugbe",    tier:"suburban",  land:68000,  residential:61000,  qoq:5.2, trend:[58000,61000,64000,68000]},
+  {name:"Kuje",     tier:"suburban",  land:38000,  residential:34000,  qoq:6.7, trend:[32000,34000,36000,38000]},
+];
+function districtByName(n){ return DISTRICTS.find(d=>d.name===n); }
+function primeTrend(){ const p=DISTRICTS.filter(d=>d.tier==='prime'); return QUARTERS.map((_,i)=> Math.round(p.reduce((s,d)=>s+d.trend[i],0)/p.length)); }
+function suburbanTrend(){ const p=DISTRICTS.filter(d=>d.tier==='suburban'); return QUARTERS.map((_,i)=> Math.round(p.reduce((s,d)=>s+d.trend[i],0)/p.length)); }
+
+const LISTINGS = [
+  {id:1, title:"Diplomatic Close Plot", category:"Residential Land", district:"Maitama", size:512, pricePerSqm:402000, status:"verified", plan:true,
+    img:"listing photograph — Maitama plot, wide crop", advisor:"adaeze", developer:"northbridge",
+    useCase:"A 512 sqm plot inside Maitama's diplomatic zone, positioned for a private residence or embassy-adjacent lease. Structures in this axis have cleared upward of ₦380,000 per sqm on resale within 24 months of a completed build.",
+    docs:{cofo:"verified",survey:"verified",registry:"verified",deed:"verified"}},
+  {id:2, title:"Asokoro Hillside Residence", category:"Developed Residence — 5 Bed", district:"Asokoro", size:465, pricePerSqm:398000, status:"verified", plan:false,
+    img:"listing photograph — Asokoro residence, wide crop", advisor:"chidi", developer:"crestline",
+    useCase:"A completed five-bedroom residence with staff quarters and a private drive, finished in 2023. Suited to owner-occupation or a diplomatic-adjacent lease — comparable Asokoro leases run ₦18m–₦24m per annum.",
+    docs:{cofo:"verified",survey:"verified",registry:"verified",deed:"verified"}},
+  {id:3, title:"Jabi Waterfront Commercial Plot", category:"Commercial Plot", district:"Jabi", size:323, pricePerSqm:198000, status:"pending", plan:true,
+    img:"listing photograph — Jabi waterfront plot, wide crop", advisor:"ifeoma", developer:"lakeview",
+    useCase:"Fronting the Jabi Lake axis with retail and hospitality precedent nearby. Registry search on the parent title is underway — we do not advise a deposit until it clears.",
+    docs:{cofo:"verified",survey:"verified",registry:"progress",deed:"pending"}},
+  {id:4, title:"Gwarinpa Family Estate Plot", category:"Residential Land", district:"Gwarinpa", size:644, pricePerSqm:142000, status:"verified", plan:true,
+    img:"listing photograph — Gwarinpa estate plot, wide crop", advisor:"adaeze", developer:"northbridge",
+    useCase:"A corner plot in a gated Gwarinpa estate with existing road and drainage infrastructure already in place. Common among first-time diaspora buyers building toward retirement or rental income.",
+    docs:{cofo:"verified",survey:"verified",registry:"verified",deed:"verified"}},
+  {id:5, title:"Lugbe Growth Corridor Plot", category:"Residential Land", district:"Lugbe", size:328, pricePerSqm:58000, status:"verified", plan:true,
+    img:"listing photograph — Lugbe corridor plot, wide crop", advisor:"chidi", developer:"capitalreach",
+    useCase:"Positioned along the airport road growth corridor, ahead of the district's five-year infrastructure plan. Entry-level pricing for investors building a first Abuja position.",
+    docs:{cofo:"verified",survey:"verified",registry:"verified",deed:"verified"}},
+  {id:6, title:"Kuje Frontier Acreage", category:"Residential Land", district:"Kuje", size:718, pricePerSqm:41000, status:"verified", plan:false,
+    img:"listing photograph — Kuje acreage, wide crop", advisor:"ifeoma", developer:"capitalreach",
+    useCase:"A larger frontier plot suited to a phased self-build or land-banking position ahead of Kuje's projected road expansion.",
+    docs:{cofo:"verified",survey:"verified",registry:"verified",deed:"verified"}},
+];
+LISTINGS.forEach(l=>{ l.price = l.size*l.pricePerSqm; l.d = districtByName(l.district); l.belowAvg = l.pricePerSqm < l.d.land; });
+
+const ADVISORS = {
+  adaeze:{name:"Adaeze Okonkwo", patch:"Senior Advisor, Prime Districts", phone:"+234 803 555 0142"},
+  chidi:{name:"Chidi Umeh", patch:"Advisor, Diaspora Clients", phone:"+234 803 555 0187"},
+  ifeoma:{name:"Ifeoma Bello", patch:"Advisor, Commercial &amp; Mixed-Use", phone:"+234 803 555 0219"},
+};
+const DEVELOPERS = {
+  northbridge:{name:"Northbridge Development Co.", delivered:"14 estates delivered since 2011", onSchedule:"96% handovers on schedule"},
+  crestline:{name:"Crestline Estates", delivered:"9 estates delivered since 2014", onSchedule:"92% handovers on schedule"},
+  lakeview:{name:"Lakeview Frontier Ltd", delivered:"6 estates delivered since 2017", onSchedule:"89% handovers on schedule"},
+  capitalreach:{name:"Capital Reach Properties", delivered:"11 estates delivered since 2013", onSchedule:"94% handovers on schedule"},
+};
+
+const ARTICLES = [
+  "C of O vs R of O: what diaspora buyers confuse most",
+  "How Governor's Consent works — and why it takes time",
+  "Reading a survey plan before you commit",
+];
+
+const INQUIRIES = [
+  {title:"Jabi Waterfront Commercial Plot — inspection request", meta:"Submitted 2 Aug 2026 · Inspection", status:"green", label:"Advisor Assigned"},
+  {title:"General inquiry — diaspora document process", meta:"Submitted 26 Jul 2026 · General", status:"grey", label:"Closed"},
+  {title:"Gwarinpa Family Estate Plot — inspection request", meta:"Submitted 18 Jul 2026 · Inspection", status:"navy", label:"In Review"},
+  {title:"General inquiry — payment plan options", meta:"Submitted 10 Jul 2026 · General", status:"grey", label:"Closed"},
+];
+const DOCUMENTS = [
+  {title:"Deed of Assignment — Gwarinpa Family Estate Plot", meta:"Uploaded 30 Jul 2026", status:"green", label:"Verified"},
+  {title:"Survey Plan — Gwarinpa Family Estate Plot", meta:"Uploaded 30 Jul 2026", status:"green", label:"Verified"},
+  {title:"Registry Search — Jabi Waterfront Commercial Plot", meta:"Requested 2 Aug 2026", status:"gold", label:"Pending"},
+  {title:"Proof of Identity — Client File", meta:"Requested 5 Aug 2026", status:"terracotta", label:"Action Required"},
+];
+
+/* ===================================================================
+   FORMAT HELPERS
+=================================================================== */
+const fmt = n => "₦" + Math.round(n).toLocaleString('en-NG');
+const fmtN = n => Math.round(n).toLocaleString('en-NG');
+
+/* ===================================================================
+   SVG CHART HELPERS
+=================================================================== */
+function lineChartSVG(series, opts={}){
+  const w=opts.width||600, h=opts.height||220, padL=8, padR=8, padT=16, padB=26;
+  const allVals = series.flatMap(s=>s.data);
+  const min = Math.min(...allVals)*0.94, max = Math.max(...allVals)*1.04;
+  const range = (max-min)||1;
+  const n = series[0].data.length;
+  const x = i => padL + (w-padL-padR) * (i/(n-1));
+  const y = v => (h-padB) - (h-padT-padB) * ((v-min)/range);
+  let out = '';
+  series.forEach(s=>{
+    const pts = s.data.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+    out += `<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="2.25" ${s.dashed?'stroke-dasharray="6,5"':''} stroke-linecap="round" stroke-linejoin="round"/>`;
+    out += `<circle cx="${x(n-1).toFixed(1)}" cy="${y(s.data[n-1]).toFixed(1)}" r="3.5" fill="${s.color}"/>`;
+  });
+  const labels = opts.labels || [];
+  const axisClass = opts.light ? 'chart-axis light' : 'chart-axis';
+  if(labels.length){
+    out += `<text x="${padL}" y="${h-6}" class="${axisClass}">${labels[0]}</text>`;
+    out += `<text x="${w-padR}" y="${h-6}" text-anchor="end" class="${axisClass}">${labels[labels.length-1]}</text>`;
+  }
+  return `<svg viewBox="0 0 ${w} ${h}" class="chart-svg" preserveAspectRatio="none">${out}</svg>`;
+}
+function sparklineSVG(data, color, w=110, h=34){
+  const min=Math.min(...data), max=Math.max(...data), range=(max-min)||1;
+  const n=data.length;
+  const x=i=> 2 + (w-4)*(i/(n-1));
+  const y=v=> (h-4) - (h-8)*((v-min)/range) + 2;
+  const pts = data.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${x(n-1).toFixed(1)}" cy="${y(data[n-1]).toFixed(1)}" r="2.5" fill="${color}"/></svg>`;
+}
+function barTrackHTML(rows, opts={}){
+  const max = Math.max(...rows.map(r=>r.value));
+  return rows.map(r=>`
+    <div class="bar-row">
+      <span class="bname">${r.name}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.max(4,(r.value/max*100)).toFixed(1)}%;${opts.fill?`background:${opts.fill};`:''}"></div></div>
+      <span class="bval">${fmt(r.value)}</span>
+    </div>`).join('');
+}
+
+/* ===================================================================
+   SHARED COMPONENTS
+=================================================================== */
+function phImg(caption, extraClass=''){
+  return `<div class="ph-img ${extraClass}"><span class="ph-cap">${caption}</span></div>`;
+}
+function seal(status){
+  return status==='pending'
+    ? `<span class="seal pending"><span class="dot"></span>Verification in progress</span>`
+    : `<span class="seal"><span class="dot"></span>Title verified</span>`;
+}
+function listingCard(l){
+  return `<a class="listing-card" href="#listing?id=${l.id}">
+    <div style="position:relative;">${phImg(l.img)}${seal(l.status)}</div>
+    <div class="lc-body">
+      <span class="eyebrow terracotta">${l.category} &middot; ${l.district}</span>
+      <h3>${l.title}</h3>
+      <div class="lc-loc">Abuja, Federal Capital Territory</div>
+    </div>
+    <div class="lc-footer">
+      <div class="lc-stat"><span class="micro">Price</span><span class="val">${fmt(l.price)}</span></div>
+      <div class="lc-stat"><span class="micro">&#8358;/sqm</span><span class="val">${fmt(l.pricePerSqm)}</span></div>
+      <div class="lc-stat"><span class="micro">Size</span><span class="val">${fmtN(l.size)} sqm</span></div>
+    </div>
+    <div class="lc-spark-row">
+      ${sparklineSVG(l.d.trend, 'var(--gold)'.includes('var')?'#C8A96A':'#C8A96A')}
+      <span class="spark-trend delta up">+${l.d.qoq}% QoQ &middot; ${l.district}</span>
+    </div>
+  </a>`;
+}
+function listingCardH(l){
+  return `<a class="listing-card-h" href="#listing?id=${l.id}">
+    <div style="position:relative;">${phImg(l.img)}${seal(l.status)}</div>
+    <div class="lch-body">
+      <div class="lch-top">
+        <span class="eyebrow terracotta">${l.category} &middot; ${l.district}</span>
+        <h3>${l.title}</h3>
+        <div class="lc-loc">Abuja, Federal Capital Territory ${l.plan?' &middot; Payment plan available':''}</div>
+      </div>
+      <div class="lch-stats">
+        <div class="stat"><span class="micro">Price</span><span class="val">${fmt(l.price)}</span></div>
+        <div class="stat"><span class="micro">&#8358;/sqm</span><span class="val">${fmt(l.pricePerSqm)}</span></div>
+        <div class="stat"><span class="micro">Size</span><span class="val">${fmtN(l.size)} sqm</span></div>
+      </div>
+    </div>
+  </a>`;
+}
+function pageHeader(eyebrow, titleHtml){
+  return `<div class="page-header"><div class="container"><span class="eyebrow terracotta">${eyebrow}</span><h1>${titleHtml}</h1></div></div>`;
+}
+function siteChrome(show){
+  document.getElementById('site-header').style.display = show ? '' : 'none';
+  document.getElementById('site-footer').style.display = show ? '' : 'none';
+}
+
+/* ===================================================================
+   PAGE RENDERERS
+=================================================================== */
+function renderHome(){
+  const featured = [LISTINGS[0], LISTINGS[2], LISTINGS[3]];
+  return `
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow gold">Abuja &middot; Federal Capital Territory</span>
+        <h1>Every price backed by a search,<br>a site visit, and a name you can call.</h1>
+        <p class="lede">Terrace &amp; Title tracks price-per-square-metre, title status, and developer standing across six Abuja districts, updated every quarter. We show you the number and the evidence behind it &mdash; then put you in a room, or a video call, with an advisor who knows the file.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">Book an advisory call</a>
+          <a href="#opportunities" class="btn btn-outline">Browse opportunities</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        ${phImg('hero photograph — Maitama residence, portrait crop','')}
+        <div class="hero-card">
+          <div style="position:static;">${seal('verified')}</div>
+          <div class="figure mono">1,240</div>
+          <div class="micro">Verified transactions tracked</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="data-strip">
+    <div class="container">
+      <div class="data-strip-grid">
+        <div class="data-cell"><span class="micro">Avg &#8358;/sqm &mdash; Maitama</span><div class="figure mono">${fmt(412000)}</div><span class="delta up">+3.8% QoQ</span></div>
+        <div class="data-cell"><span class="micro">Districts tracked</span><div class="figure mono">6</div><span class="delta" style="color:var(--slate)">Abuja FCT</span></div>
+        <div class="data-cell"><span class="micro">Live verified opportunities</span><div class="figure mono">42</div><span class="delta" style="color:var(--slate)">Updated daily</span></div>
+        <div class="data-cell"><span class="micro">Developer partners</span><div class="figure mono">18</div><span class="delta" style="color:var(--slate)">Vetted standing</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow terracotta">How we verify</span>
+      <h2 style="font-size:34px;margin-top:12px;max-width:640px;">A title verified seal means three things happened, not a claim someone made.</h2>
+      <div class="verify-grid">
+        <div class="verify-card"><span class="num">01</span><h4>Document search</h4><p>A search at the Land Registry and AGIS confirms title history and rules out a competing claim on the parcel.</p></div>
+        <div class="verify-card"><span class="num">02</span><h4>Physical inspection</h4><p>A licensed surveyor inspects the plot against its survey plan and beacon coordinates before it is listed.</p></div>
+        <div class="verify-card"><span class="num">03</span><h4>Developer standing</h4><p>We check the developer or allottee's track record &mdash; prior deliveries, disputes, and current regulatory standing.</p></div>
+      </div>
+      <div class="verify-note">Where a title is still moving through this process, the listing says so plainly &mdash; an in-progress search is never hidden behind a green badge.</div>
+    </div>
+  </section>
+
+  <section class="section bg-navy">
+    <div class="container">
+      <span class="eyebrow gold">Market intelligence</span>
+      <h2 style="font-size:34px;margin-top:12px;max-width:600px;">Prime and suburban districts move at different speeds. We track both, every quarter.</h2>
+      <div class="market-band-grid">
+        <div>
+          <div class="chart-legend">
+            <span class="legend-item"><span class="legend-swatch" style="background:var(--gold)"></span>Prime index</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#fff;border-top:2px dashed rgba(255,255,255,.8)"></span>Suburban index</span>
+          </div>
+          ${lineChartSVG([
+            {data:primeTrend(), color:'#C8A96A'},
+            {data:suburbanTrend(), color:'#FFFFFF', dashed:true}
+          ], {labels:QUARTERS, width:600, height:230})}
+        </div>
+        <div>
+          <span class="micro" style="color:rgba(255,255,255,.55)">Land &#8358;/sqm by district &mdash; Q2 '26</span>
+          <div style="margin-top:14px;">
+            ${barTrackHTML(DISTRICTS.map(d=>({name:d.name, value:d.land})))}
+          </div>
+        </div>
+      </div>
+      <div class="center-cta" style="margin-top:48px;">
+        <a href="#contact" class="btn btn-gold">Speak to an advisor about this data</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow terracotta">Featured opportunities</span>
+        <h2>Verified listings, updated this week</h2>
+      </div>
+      <div class="card-grid-3">${featured.map(listingCard).join('')}</div>
+    </div>
+  </section>
+
+  <section class="section tight bg-mist">
+    <div class="container center-cta">
+      <span class="eyebrow terracotta">Price check</span>
+      <h2 style="font-size:30px;margin:12px 0 24px;">What's your Abuja plot actually worth?</h2>
+      <a href="#price-check" class="btn btn-gold">Check a price</a>
+    </div>
+  </section>`;
+}
+
+function renderAbout(){
+  return `
+  ${pageHeader('About us','Advisory built by people who read the registry first.')}
+  <section class="section">
+    <div class="container grid-2">
+      <div>
+        <p class="stack-gap-md" style="font-size:16px;color:var(--slate);">Terrace &amp; Title was founded on a simple premise: Abuja real estate has plenty of listings and very little verifiable information. We built the district-level pricing dataset first, and the advisory practice around it second &mdash; not the other way round.</p>
+        <p style="margin-top:16px;font-size:16px;color:var(--slate);">Every advisor on our team has walked the plot they're discussing with you. Every price we quote traces back to a quarter, a district, and a sample size we can show you.</p>
+      </div>
+      ${phImg('office photograph — advisory house, Maitama, landscape crop')}
+    </div>
+    <div class="about-stats">
+      <div class="cell"><span class="micro">Years active</span><div class="val mono">9</div></div>
+      <div class="cell"><span class="micro">Transactions advised</span><div class="val mono">1,240+</div></div>
+      <div class="cell"><span class="micro">Districts covered</span><div class="val mono">6</div></div>
+    </div>
+  </section>
+  <section class="section bg-mist">
+    <div class="container">
+      <div class="section-head"><span class="eyebrow terracotta">What we hold to</span><h2>Educational, confident, never pushy</h2></div>
+      <div class="services-grid">
+        <div class="service-card"><h3>Data stays public</h3><p>Pricing and district data are visible without a sign-up. Credibility is earned, not gated.</p></div>
+        <div class="service-card"><h3>Honesty over polish</h3><p>An in-progress title search is shown as in progress &mdash; not smoothed into a green badge.</p></div>
+        <div class="service-card"><h3>An advisor, not a funnel</h3><p>Every page ends at a conversation with a named person, not a lead form that disappears into a queue.</p></div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderServices(){
+  const services = [
+    {t:"Buy-Side Advisory", d:"End-to-end guidance from shortlist to title transfer, backed by our own district pricing data."},
+    {t:"Diaspora Remote Purchase Support", d:"Virtual inspections, document-chain verification, and representative attendance for buyers who cannot be on-site."},
+    {t:"Portfolio &amp; Land Banking Strategy", d:"Multi-district positioning for investors building a long-horizon Abuja portfolio."},
+    {t:"Developer Partnership Vetting", d:"Standing checks on developers and allottees before a plot is ever listed to a client."},
+    {t:"Post-Purchase Documentation Support", d:"C of O, deed of assignment, and Governor's Consent follow-through after the deal closes."},
+    {t:"Market Data &amp; Reporting", d:"Quarterly district reports and bespoke pricing briefs for corporate and institutional investors."},
+  ];
+  return `
+  ${pageHeader('Services','Advisory built around the file, not the transaction.')}
+  <section class="section">
+    <div class="container">
+      <div class="services-grid">
+        ${services.map(s=>`<div class="service-card"><span class="eyebrow terracotta">Service</span><h3>${s.t}</h3><p>${s.d}</p></div>`).join('')}
+      </div>
+    </div>
+  </section>
+  <section class="section bg-navy center-cta">
+    <div class="container">
+      <h2 style="font-size:30px;margin-bottom:20px;">Not sure which service fits your position?</h2>
+      <a href="#contact" class="btn btn-gold">Book an advisory call</a>
+    </div>
+  </section>`;
+}
+
+function renderOpportunities(){
+  setTimeout(wireOpportunitiesFilters, 0);
+  return `
+  ${pageHeader('Opportunities', `<span class="count" id="opp-count">${LISTINGS.length}</span> verified opportunities across the Federal Capital Territory`)}
+  <section class="container opps-layout">
+    <aside class="filter-rail">
+      <h4>Filter</h4>
+      <div class="filter-group">
+        <label class="flabel">Category</label>
+        <select id="f-category"><option value="">All categories</option>${[...new Set(LISTINGS.map(l=>l.category))].map(c=>`<option>${c}</option>`).join('')}</select>
+      </div>
+      <div class="filter-group">
+        <label class="flabel">District</label>
+        <select id="f-district"><option value="">All districts</option>${DISTRICTS.map(d=>`<option>${d.name}</option>`).join('')}</select>
+      </div>
+      <div class="filter-group">
+        <label class="flabel">Price range (&#8358;)</label>
+        <div class="range-inputs">
+          <input type="number" id="f-min" placeholder="Min">
+          <input type="number" id="f-max" placeholder="Max">
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="checkbox-row"><input type="checkbox" id="f-verified"><label for="f-verified">Title verified only</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="f-plan"><label for="f-plan">Payment plan available</label></div>
+        <div class="checkbox-row"><input type="checkbox" id="f-below"><label for="f-below">Below district average</label></div>
+      </div>
+      <button class="btn btn-outline btn-block btn-sm" id="f-reset" type="button">Reset filters</button>
+    </aside>
+    <div>
+      <div class="results-bar">
+        <span class="rcount" id="results-count">${LISTINGS.length} results</span>
+        <select class="sort-select" id="f-sort">
+          <option value="default">Sort: Featured</option>
+          <option value="price-asc">Price: Low to high</option>
+          <option value="price-desc">Price: High to low</option>
+          <option value="psqm-asc">&#8358;/sqm: Low to high</option>
+        </select>
+      </div>
+      <div id="listing-results">${LISTINGS.map(listingCardH).join('')}</div>
+    </div>
+  </section>`;
+}
+function wireOpportunitiesFilters(){
+  const els = ['f-category','f-district','f-min','f-max','f-verified','f-plan','f-below','f-sort'].map(id=>document.getElementById(id));
+  if(!els[0]) return;
+  const apply = ()=>{
+    let res = LISTINGS.slice();
+    const cat = document.getElementById('f-category').value;
+    const dist = document.getElementById('f-district').value;
+    const min = parseFloat(document.getElementById('f-min').value);
+    const max = parseFloat(document.getElementById('f-max').value);
+    const verified = document.getElementById('f-verified').checked;
+    const plan = document.getElementById('f-plan').checked;
+    const below = document.getElementById('f-below').checked;
+    const sort = document.getElementById('f-sort').value;
+    if(cat) res = res.filter(l=>l.category===cat);
+    if(dist) res = res.filter(l=>l.district===dist);
+    if(!isNaN(min)) res = res.filter(l=>l.price>=min);
+    if(!isNaN(max)) res = res.filter(l=>l.price<=max);
+    if(verified) res = res.filter(l=>l.status==='verified');
+    if(plan) res = res.filter(l=>l.plan);
+    if(below) res = res.filter(l=>l.belowAvg);
+    if(sort==='price-asc') res.sort((a,b)=>a.price-b.price);
+    if(sort==='price-desc') res.sort((a,b)=>b.price-a.price);
+    if(sort==='psqm-asc') res.sort((a,b)=>a.pricePerSqm-b.pricePerSqm);
+    document.getElementById('listing-results').innerHTML = res.length ? res.map(listingCardH).join('') : `<div style="padding:60px 0;text-align:center;color:var(--slate);">No opportunities match these filters. <button class="btn-text" onclick="document.getElementById('f-reset').click()">Reset filters</button></div>`;
+    document.getElementById('results-count').textContent = res.length + ' results';
+  };
+  els.forEach(el=> el.addEventListener('change', apply));
+  document.getElementById('f-reset').addEventListener('click', ()=>{
+    document.getElementById('f-category').value='';
+    document.getElementById('f-district').value='';
+    document.getElementById('f-min').value='';
+    document.getElementById('f-max').value='';
+    document.getElementById('f-verified').checked=false;
+    document.getElementById('f-plan').checked=false;
+    document.getElementById('f-below').checked=false;
+    document.getElementById('f-sort').value='default';
+    apply();
+  });
+}
+
+function renderListing(params){
+  const id = parseInt(params.get('id')||'1',10);
+  const l = LISTINGS.find(x=>x.id===id) || LISTINGS[0];
+  const adv = ADVISORS[l.advisor];
+  const dev = DEVELOPERS[l.developer];
+  const docRow = (label,status)=>{
+    const map = {verified:['verified','Verified'],progress:['progress','In progress'],pending:['pending','Pending']};
+    const [cls,word] = map[status];
+    return `<tr><td>${label}</td><td><span class="status-word ${cls}">${word}</span></td></tr>`;
+  };
+  return `
+  <section class="detail-cover">
+    ${phImg(l.img,'dark')}
+    <div class="detail-scrim"><div class="container">
+      ${seal(l.status)}
+      <h1>${l.title}</h1>
+      <div class="loc mono">${l.district}, Abuja &middot; Federal Capital Territory</div>
+    </div></div>
+  </section>
+  <section class="container detail-layout">
+    <div>
+      <div class="stats-strip">
+        <div class="stat"><span class="micro">Price</span><div class="val">${fmt(l.price)}</div><div class="sub">${l.plan?'Payment plan available':'Outright purchase'}</div></div>
+        <div class="stat"><span class="micro">&#8358;/sqm</span><div class="val">${fmt(l.pricePerSqm)}</div><div class="sub">${l.belowAvg?'Below':'At/above'} district average of ${fmt(l.d.land)}</div></div>
+        <div class="stat"><span class="micro">Size</span><div class="val">${fmtN(l.size)} sqm</div><div class="sub">${l.category}</div></div>
+        <div class="stat"><span class="micro">Status</span><div class="val">${l.status==='verified'?'Verified':'In progress'}</div><div class="sub">${l.district} axis</div></div>
+      </div>
+
+      <div class="detail-block">
+        <h3>Price history &mdash; ${l.district}</h3>
+        ${lineChartSVG([{data:l.d.trend, color:'#0F2D52'}], {labels:QUARTERS, width:760, height:200})}
+      </div>
+
+      <div class="detail-block">
+        <h3>Projected use case</h3>
+        <p style="font-size:15px;color:var(--slate);">${l.useCase}</p>
+      </div>
+
+      <div class="detail-block">
+        <h3>Documentation</h3>
+        <table class="doc-table">
+          <thead><tr><th>Document</th><th>Status</th></tr></thead>
+          <tbody>
+            ${docRow('Certificate of Occupancy (C of O)', l.docs.cofo)}
+            ${docRow('Survey plan', l.docs.survey)}
+            ${docRow('Registry search', l.docs.registry)}
+            ${docRow('Deed of assignment', l.docs.deed)}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="disclaimer-box">
+        <span class="mark">&#9888;</span>
+        <p>This price reflects district-level averages, not a formal valuation of this specific plot. Confirm final pricing and title status with your advisor before making an offer.</p>
+      </div>
+    </div>
+
+    <aside>
+      <div class="sidebar-card">
+        <div class="advisor-head">
+          <div class="avatar"></div>
+          <div><div class="aname">${adv.name}</div><div class="apatch">${adv.patch}</div></div>
+        </div>
+        <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Request sent';">
+          <div class="form-field"><label>Full name</label><input type="text" required></div>
+          <div class="form-field"><label>Phone or WhatsApp</label><input type="text" required></div>
+          <div class="form-field"><label>Best time to call</label><input type="text" placeholder="e.g. weekday evenings, WAT"></div>
+          <button type="submit" class="btn btn-primary btn-block">Request a callback</button>
+        </form>
+        <a href="#contact" class="btn btn-outline btn-block" style="margin-top:10px;">Book an inspection</a>
+      </div>
+      <div class="sidebar-card">
+        <span class="dev-badge">&#10003; Verified partner</span>
+        <div class="aname" style="font-size:16px;">${dev.name}</div>
+        <div class="dev-stat-row"><span>Track record</span><span class="val">${dev.delivered}</span></div>
+        <div class="dev-stat-row"><span>Delivery reliability</span><span class="val">${dev.onSchedule}</span></div>
+      </div>
+    </aside>
+  </section>`;
+}
+
+function renderMarket(){
+  const prime = DISTRICTS.filter(d=>d.tier==='prime');
+  const sub = DISTRICTS.filter(d=>d.tier==='suburban');
+  const primeIdx = Math.round(prime.reduce((s,d)=>s+d.land,0)/prime.length);
+  const subIdx = Math.round(sub.reduce((s,d)=>s+d.land,0)/sub.length);
+  return `
+  <section class="market-header-band">
+    <div class="container">
+      <span class="eyebrow gold">Market intelligence</span>
+      <h1 style="color:#fff;font-size:38px;margin-top:12px;">Q2 2026 Abuja district report</h1>
+      <div class="index-grid">
+        <div class="index-cell"><span class="micro" style="color:rgba(255,255,255,.55)">Prime index (&#8358;/sqm)</span><div class="val mono">${fmt(primeIdx)}</div></div>
+        <div class="index-cell"><span class="micro" style="color:rgba(255,255,255,.55)">Suburban index (&#8358;/sqm)</span><div class="val mono">${fmt(subIdx)}</div></div>
+        <div class="index-cell"><span class="micro" style="color:rgba(255,255,255,.55)">Median plot size</span><div class="val mono">650 sqm</div></div>
+        <div class="index-cell"><span class="micro" style="color:rgba(255,255,255,.55)">Sample size</span><div class="val mono">1,240 txns</div></div>
+      </div>
+    </div>
+  </section>
+  <section class="container hub-layout">
+    <div>
+      <h3 style="font-size:22px;margin-bottom:20px;">Pricing by district &mdash; Q2 2026</h3>
+      <table class="price-table">
+        <thead><tr><th>District</th><th>Land &#8358;/sqm</th><th>Residential &#8358;/sqm</th><th>QoQ</th></tr></thead>
+        <tbody>
+          ${DISTRICTS.map(d=>`<tr><td class="dname">${d.name}</td><td>${fmt(d.land)}</td><td>${fmt(d.residential)}</td><td class="qoq up">+${d.qoq}%</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+    <aside>
+      <div class="report-card">
+        <span class="eyebrow terracotta">Full report</span>
+        <h4 style="margin:10px 0 10px;font-size:16px;">Q2 2026 Abuja district report</h4>
+        <p style="font-size:13px;color:var(--slate);margin-bottom:16px;">The full report is issued through an advisor, not downloaded &mdash; so you get the numbers and someone to walk you through what they mean for your position.</p>
+        <a href="#contact" class="btn btn-primary btn-block btn-sm">Request through an advisor</a>
+      </div>
+      <div class="sidebar-card">
+        <h4 style="font-size:15px;margin-bottom:6px;">Reading the data</h4>
+        <ul>${ARTICLES.map(a=>`<li><a href="#about" class="article-link">${a}<span class="arrow">&rarr;</span></a></li>`).join('')}</ul>
+      </div>
+      <a href="#price-check" class="btn btn-outline btn-block">Check a price yourself</a>
+    </aside>
+  </section>`;
+}
+
+function renderPriceCheck(){
+  setTimeout(wirePriceCheck, 0);
+  return `
+  ${pageHeader('Price check','What is a district actually trading at?')}
+  <section class="container pc-layout">
+    <div class="sidebar-card" style="margin-bottom:0;">
+      <h4 style="font-size:17px;margin-bottom:20px;">Check a district price</h4>
+      <form id="pc-form">
+        <div class="form-field"><label>District</label><select id="pc-district">${DISTRICTS.map(d=>`<option>${d.name}</option>`).join('')}</select></div>
+        <div class="form-field"><label>Property type</label><select id="pc-type"><option value="land">Land</option><option value="residential">Residential / developed</option></select></div>
+        <div class="form-field"><label>Size in sqm (optional)</label><input type="number" id="pc-size" placeholder="e.g. 500"></div>
+        <button type="submit" class="btn btn-primary btn-block">Check price</button>
+      </form>
+    </div>
+    <div id="pc-result"></div>
+  </section>`;
+}
+function wirePriceCheck(){
+  const form = document.getElementById('pc-form');
+  if(!form) return;
+  const render = ()=>{
+    const dName = document.getElementById('pc-district').value;
+    const type = document.getElementById('pc-type').value;
+    const size = parseFloat(document.getElementById('pc-size').value) || 500;
+    const d = districtByName(dName);
+    const val = type==='land' ? d.land : d.residential;
+    const trend = type==='land' ? d.trend : d.trend.map(v=>Math.round(v*(d.residential/d.land)));
+    const low = val*size*0.9, high = val*size*1.1;
+    const liveCount = LISTINGS.filter(l=>l.district===dName).length;
+    document.getElementById('pc-result').innerHTML = `
+      <div class="pc-result-panel">
+        <span class="eyebrow terracotta">${dName} &middot; ${type==='land'?'Land':'Residential'}</span>
+        <div class="val">${fmt(val)}</div>
+        <span class="delta up">+${d.qoq}% QoQ</span>
+        <div style="margin-top:20px;">${lineChartSVG([{data:trend,color:'#0F2D52'}],{labels:QUARTERS,width:520,height:150,light:true})}</div>
+      </div>
+      <div class="pc-two-col">
+        <div class="pc-card"><span class="micro">Estimated range at ${fmtN(size)} sqm</span><div class="val">${fmt(low)} &ndash; ${fmt(high)}</div></div>
+        <div class="pc-card"><span class="micro">Live listings in ${dName}</span><div class="val">${liveCount}</div></div>
+      </div>
+      <div class="pc-cta-strip">
+        <div><h4 style="color:#fff;font-size:18px;margin-bottom:6px;">A number is a starting point.</h4><p style="font-size:13.5px;color:rgba(255,255,255,.75);">An advisor turns it into an offer strategy.</p></div>
+        <a href="#contact" class="btn btn-gold">Book a 20-minute call</a>
+      </div>
+      <p class="pc-disclaimer">Estimates are directional, drawn from Terrace &amp; Title's quarterly district sampling. They are not a valuation of a specific plot and do not replace a physical inspection and title search.</p>
+    `;
+  };
+  form.addEventListener('submit', e=>{ e.preventDefault(); render(); });
+  document.getElementById('pc-district').addEventListener('change', render);
+  document.getElementById('pc-type').addEventListener('change', render);
+  render();
+}
+
+function renderContact(){
+  setTimeout(wireContact, 0);
+  return `
+  ${pageHeader('Contact','Talk to an advisor, or book an inspection')}
+  <section class="container contact-layout">
+    <div class="contact-card">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-general" type="button">General inquiry</button>
+        <button class="tab-btn" id="tab-inspection" type="button">Book an inspection</button>
+      </div>
+      <form onsubmit="event.preventDefault();this.querySelector('button[type=submit]').textContent='Sent — an advisor will reach out shortly';">
+        <div class="form-grid-2">
+          <div class="form-field"><label>Full name</label><input type="text" required></div>
+          <div class="form-field"><label>Phone or WhatsApp</label><input type="text" required></div>
+          <div class="form-field"><label>Email</label><input type="email" required></div>
+          <div class="form-field"><label>Where are you based?</label>
+            <select><option>Nigeria &mdash; Abuja</option><option>Nigeria &mdash; other</option><option>United Kingdom</option><option>United States</option><option>Canada</option><option>UAE</option><option>Other</option></select>
+          </div>
+        </div>
+        <div id="inspection-fields" style="display:none;">
+          <hr class="hair" style="margin:22px 0;">
+          <div class="form-grid-2">
+            <div class="form-field"><label>Property</label><select>${LISTINGS.map(l=>`<option>${l.title}</option>`).join('')}</select></div>
+            <div class="form-field"><label>Preferred date</label><input type="date"></div>
+          </div>
+          <div class="form-field">
+            <label>Mode</label>
+            <div class="mode-options">
+              <div class="mode-opt sel" data-mode>In person</div>
+              <div class="mode-opt" data-mode>Virtual walkthrough</div>
+              <div class="mode-opt" data-mode>Representative attends</div>
+            </div>
+          </div>
+          <div class="form-field"><label>Your timezone</label><select><option>WAT (UTC+1)</option><option>GMT/BST (UK)</option><option>EST/EDT (US East)</option><option>PST/PDT (US West)</option><option>GST (UAE)</option></select></div>
+          <div class="virtual-note">Virtual walkthroughs are conducted live with a surveyor on site &mdash; you direct the camera and ask questions in real time.</div>
+        </div>
+        <div class="consent-row"><input type="checkbox" required style="margin-top:3px;"><span>I agree to be contacted by Terrace &amp; Title Real Estate Advisory about this inquiry.</span></div>
+        <button type="submit" class="btn btn-primary">Send inquiry</button>
+      </form>
+    </div>
+    <aside class="side-office">
+      <div class="sidebar-card">
+        <h4>Office</h4>
+        <p class="office-line">Terrace &amp; Title Advisory House<br>Plot 14, Gana Street, Maitama<br>Abuja, Federal Capital Territory</p>
+        <div class="direct-contact">+234 803 555 0100<br>hello@terraceandtitle.com</div>
+        <p class="office-line" style="margin-top:10px;">We respond within one business day &mdash; sooner where possible for diaspora time zones outside WAT.</p>
+      </div>
+    </aside>
+  </section>`;
+}
+function wireContact(){
+  const tg = document.getElementById('tab-general'), ti = document.getElementById('tab-inspection'), fields = document.getElementById('inspection-fields');
+  if(!tg) return;
+  tg.addEventListener('click', ()=>{ tg.classList.add('active'); ti.classList.remove('active'); fields.style.display='none'; });
+  ti.addEventListener('click', ()=>{ ti.classList.add('active'); tg.classList.remove('active'); fields.style.display='block'; });
+  document.querySelectorAll('[data-mode]').forEach(el=>{
+    el.addEventListener('click', ()=>{ document.querySelectorAll('[data-mode]').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); });
+  });
+}
+
+function renderPortalLogin(){
+  siteChrome(false);
+  return `
+  <div class="portal-login-wrap">
+    <div class="pl-form-col">
+      <div class="pl-form-inner">
+        <div class="logo-lockup"><div class="mark-row"><img src="logo.png" alt="Terrace &amp; Title" class="mark-img"><span class="word">Terrace <span class="amp">&amp;</span> Title</span></div></div>
+        <h2 style="font-size:28px;margin:28px 0 24px;">Welcome back</h2>
+        <form onsubmit="event.preventDefault();location.hash='portal-dashboard';">
+          <div class="form-field"><label>Email</label><input type="email" required placeholder="you@email.com"></div>
+          <div class="form-field"><label>Password</label><input type="password" required placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"></div>
+          <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+        </form>
+        <p style="font-size:13px;color:var(--slate);margin-top:18px;">New client? <a href="#contact" style="color:var(--terracotta);font-weight:600;text-decoration:underline;">Speak to an advisor</a> to set up portal access.</p>
+        <a href="#home" class="pl-back">&larr; Back to main site</a>
+      </div>
+    </div>
+    <div class="pl-panel">
+      <div class="pl-panel-inner">
+        <h2>Every document, every update, in one place &mdash; wherever you are.</h2>
+        <div class="pl-figure"><div class="val">48 hrs</div><div class="lbl">Average document turnaround</div></div>
+        <div class="pl-figure"><div class="val">6</div><div class="lbl">Districts under active tracking</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function portalNav(active){
+  const items = [['portal-dashboard','Dashboard'],['portal-inquiries','Inquiries'],['portal-documents','Documents']];
+  return `<nav class="portal-nav">${items.map(([r,l])=>`<a href="#${r}" class="${active===r?'active':''}">${l}</a>`).join('')}</nav>`;
+}
+function portalShell(active, contentHtml){
+  siteChrome(false);
+  return `
+  <div class="portal-shell">
+    <div class="portal-topbar">
+      <div class="logo-lockup"><div class="mark-row"><img src="logo.png" alt="Terrace &amp; Title" class="mark-img"><span class="word">Terrace <span class="amp">&amp;</span> Title</span></div></div>
+      <a href="#home" class="portal-back">&larr; Back to main site</a>
+    </div>
+    <div class="portal-body">
+      <aside class="portal-sidebar">
+        <div class="portal-signedin"><span class="micro">Signed in as</span><div class="name">Efe Omorogbe</div></div>
+        ${portalNav(active)}
+        <div class="portal-signout"><a href="#home">Sign out</a></div>
+      </aside>
+      <div class="portal-content">${contentHtml}</div>
+    </div>
+  </div>`;
+}
+function renderPortalDashboard(){
+  const stages = [
+    {l:'Inquiry', s:'done'},{l:'Inspection', s:'done'},{l:'Documents', s:'current'},{l:'Offer', s:''},{l:'Transfer', s:''}
+  ];
+  const watch = districtByName('Gwarinpa');
+  return portalShell('portal-dashboard', `
+    <h1>Good afternoon, Efe.</h1>
+    <div class="stat-card-row">
+      <div class="stat-card"><span class="micro">Active inquiries</span><div class="val">2</div></div>
+      <div class="stat-card"><span class="micro">Properties shortlisted</span><div class="val">5</div></div>
+      <div class="stat-card"><span class="micro">Documents pending</span><div class="val">1</div></div>
+    </div>
+    <div class="dash-grid">
+      <div class="panel-card">
+        <h3>Deal tracker &mdash; Gwarinpa Family Estate Plot</h3>
+        <div class="tracker-row">
+          ${stages.map(st=>`<div class="tracker-stage ${st.s}"><div class="tracker-line"></div><div class="tracker-dot"></div><div class="tracker-label">${st.l}</div></div>`).join('')}
+        </div>
+        <div class="tracker-note">Blocked on: registry search for the deed of assignment &mdash; expected within 5 business days.</div>
+      </div>
+      <div class="panel-card">
+        <h3>Watchlist</h3>
+        <div class="watch-district"><span style="font-weight:600;color:var(--navy);">Gwarinpa</span><span class="delta up">+${watch.qoq}% QoQ</span></div>
+        <div class="watch-price mono">${fmt(watch.land)} <span style="font-size:12px;color:var(--slate);font-weight:400;">/sqm</span></div>
+        ${lineChartSVG([{data:watch.trend,color:'#0F2D52'}],{labels:QUARTERS,width:280,height:110,light:true})}
+      </div>
+    </div>
+  `);
+}
+function recordList(items){
+  return items.map(i=>`<div class="record-list-item"><div class="record-main"><div class="rtitle">${i.title}</div><div class="rmeta">${i.meta}</div></div><span class="pill ${i.status}">${i.label}</span></div>`).join('');
+}
+function renderPortalInquiries(){
+  return portalShell('portal-inquiries', `
+    <h1>Inquiries</h1>
+    <div class="panel-card">${recordList(INQUIRIES)}</div>
+  `);
+}
+function renderPortalDocuments(){
+  return portalShell('portal-documents', `
+    <h1>Documents</h1>
+    <div class="panel-card">${recordList(DOCUMENTS)}</div>
+    <div class="upload-card">
+      <h4 style="margin-bottom:14px;">Upload a document</h4>
+      <div class="form-field" style="max-width:320px;margin:0 auto 0;text-align:left;">
+        <label>Document type</label>
+        <select><option>Proof of identity</option><option>Deed of assignment</option><option>Survey plan</option><option>Registry search</option><option>Other</option></select>
+      </div>
+      <div class="drop-area">Drag a file here, or click to browse</div>
+      <button class="btn btn-primary btn-sm">Upload document</button>
+    </div>
+  `);
+}
+
+function renderPlaceholder(name){
+  const label = name.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+  return `<section class="placeholder-page"><div class="container"><div class="ph-box">
+    <span class="eyebrow terracotta">Coming soon</span>
+    <h1>${label}</h1>
+    <p style="color:var(--slate);margin-bottom:24px;">This page is out of scope for the current prototype. In production it would carry the same design system as everything else here.</p>
+    <a href="#home" class="btn btn-outline">Back to home</a>
+  </div></div></section>`;
+}
+
+/* ===================================================================
+   ROUTER
+=================================================================== */
+const ROUTES = {
+  'home': renderHome, '': renderHome,
+  'about': renderAbout,
+  'services': renderServices,
+  'opportunities': renderOpportunities,
+  'listing': renderListing,
+  'market': renderMarket,
+  'price-check': renderPriceCheck,
+  'contact': renderContact,
+  'portal-login': renderPortalLogin,
+  'portal-dashboard': renderPortalDashboard,
+  'portal-inquiries': renderPortalInquiries,
+  'portal-documents': renderPortalDocuments,
+};
+const NO_SHELL_ROUTES = new Set(['portal-login','portal-dashboard','portal-inquiries','portal-documents']);
+
+function router(){
+  const raw = location.hash.slice(1) || 'home';
+  const [path, query] = raw.split('?');
+  const params = new URLSearchParams(query||'');
+  const app = document.getElementById('app');
+  closeDrawer();
+
+  if(!NO_SHELL_ROUTES.has(path)) siteChrome(true);
+
+  if(ROUTES[path]){
+    app.innerHTML = ROUTES[path](params);
+  } else {
+    siteChrome(true);
+    app.innerHTML = renderPlaceholder(path);
+  }
+  window.scrollTo(0,0);
+
+  document.querySelectorAll('.nav-links a[data-route]').forEach(a=>{
+    a.classList.toggle('active', a.dataset.route === path || (path==='home' && a.dataset.route==='home'));
+  });
+}
+window.addEventListener('hashchange', router);
+window.addEventListener('DOMContentLoaded', router);
+
+/* mobile drawer */
+function closeDrawer(){ document.getElementById('mobile-drawer').classList.remove('open'); }
+document.getElementById('burger-btn').addEventListener('click', ()=> document.getElementById('mobile-drawer').classList.add('open'));
+document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+</script>
+</body>
+</html>
