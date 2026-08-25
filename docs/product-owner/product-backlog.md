@@ -138,7 +138,7 @@ Status values used below: **Not started** (everything, currently — nothing has
 |---|---|---|---|---|
 | PBI-080 | Draft and legally review Terms of Use and Privacy Policy | Via existing counsel, per `docs/project-overview.md` §8 decision | Not yet sized | Not started |
 | PBI-081 | Legal review of the Price Check tool's and Listing Detail's disclaimer copy | Same legal-review path as PBI-080 | Not yet sized | Not started |
-| PBI-082 | Point `terraceandtitle.com` at Vercel | Registrar/DNS control is confirmed as already held by Terrace & Title (`docs/project-overview.md` §10) — this item is now just the configuration work itself, no longer blocked on a confirmation | Not yet sized | Not started |
+| PBI-082 | Point `terraceandtitle.com` at Vercel | Done — apex and `www` both show Valid Configuration in Vercel's Domains tab; verified live via a plain unauthenticated request (`www.terraceandtitle.com` returns 200 with real content, valid SSL/HSTS; apex 308-redirects to `www`) | Not yet sized | Done |
 | PBI-083 | Verify the Resend sending domain (`terraceandtitle.com`) | Supports FR-406 | Not yet sized | Not started |
 | PBI-084 | Final QA pass confirming every form's validation rules are enforced server-side, not only client-side | Directly addresses a pattern flagged repeatedly in `docs/FSD.md` (FR-120, FR-121, FR-208) | Not yet sized | Not started |
 | PBI-085 | Confirm both Plausible custom goals are firing correctly in production | FR-408 | Not yet sized | Not started |

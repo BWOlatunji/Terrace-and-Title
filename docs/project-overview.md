@@ -86,7 +86,7 @@ Dates are intentionally not fixed below — see [Open Questions](#8-open-questio
 | Phasing decision (v1 public site → Phase 2 portal) | ✅ Complete |
 | Project documentation package (developer, designer, stakeholder) | ✅ Complete (this document is the third of three) |
 | Figma recreation of the design system | ⏳ Not started — owned by the external designer, using `docs/design-handoff.md` |
-| Application scaffold (Next.js + Payload + database) | ⏳ Not started — next technical step |
+| Application scaffold (Next.js + Payload + database) | ✅ Complete — Next.js 16 + Payload CMS 3, all 9 collections defined and migrated against a real Neon database (natively integrated via Vercel's Storage tab, unified billing), deployed to Vercel and live at `terraceandtitle.com` |
 | v1 build (public marketing site, content-populated) | ⏳ Not started |
 | v1 launch | ⏳ Not started — **target: within 8 weeks of this document (~mid-October 2026)**, launching with the placeholder image system rather than waiting on real photography |
 | Phase 2 (client portal) | ⏳ Not started — trigger condition set: begins once v1 has produced a meaningful volume of real inquiries/deals, not on a fixed calendar date (see Section 4) |
@@ -159,7 +159,7 @@ None of these exist yet and each needs an owner and a billing decision before th
 | Resend | Transactional email | Maryam Aderinto | Create account, verify sending domain (`terraceandtitle.com`) |
 | Plausible | Analytics | Maryam Aderinto | Create account, connect billing (paid-only product) |
 | Meta Cloud API (WhatsApp) | Phase 2 notification channel | Maryam Aderinto | Not needed yet — flagged here so approval (which can take time) can start early once Phase 2's activity threshold is close |
-| Domain / DNS | Public URL for the live site | — | **Confirmed: `terraceandtitle.com`.** Terrace & Title already controls the registrar/DNS — ready for Vercel domain configuration whenever the build reaches that point |
+| Domain / DNS | Public URL for the live site | — | **Live: `terraceandtitle.com`** is pointed at Vercel and serving the app — `www.terraceandtitle.com` returns 200 with valid SSL, apex 308-redirects to `www` |
 
 ---
 
