@@ -11,12 +11,9 @@ export default function HomePlaceholder() {
       </span>
       <h1 className="font-heading text-5xl font-medium text-navy">Terrace &amp; Title</h1>
       <p className="max-w-lg font-sans text-base text-slate">
-        Next.js, Payload CMS, and the brand&rsquo;s design tokens are wired up. The real Home page
-        content is separate backlog work — see{' '}
-        <code className="rounded bg-mist px-1.5 py-0.5 font-mono text-sm text-navy">
-          docs/product-owner/product-backlog.md
-        </code>
-        , Epic B.
+        A data-led real estate advisory for Abuja, Nigeria — tracking price-per-square-metre,
+        title verification status, and developer standing across six districts, updated every
+        quarter. Invest with confidence. Own with pride.
       </p>
       <div className="flex items-center gap-4 rounded border border-hairline-10 bg-mist px-4 py-3 font-mono text-sm text-navy">
         <span>₦412,000</span>
