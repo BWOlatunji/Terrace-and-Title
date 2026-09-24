@@ -47,17 +47,19 @@ The actual content of "data is the product." One row per district per quarter. A
 | Field | Type | Notes |
 |---|---|---|
 | `district` | relationship → `districts`, required | |
-| `quarter` | text, required | Fixed format, e.g. `"Q2 '26"` |
+| `quarter` | text, required | Fixed format, e.g. `"Q3 '26"` |
 | `land` | number, required | ₦/sqm |
 | `residential` | number, required | ₦/sqm |
 | `qoq` | number | Quarter-over-quarter % change. Omitted on a district's first-ever quarter — there's nothing to compare against (see `docs/FSD.md` FR-401's edge case) |
 
+**On the numbers themselves:** these are fictional (see the top-of-document note), but no longer hand-guessed. Each district's current-quarter figure is anchored to a real median ₦/sqm computed from a real Abuja land-listings dataset (nigeriapropertycentre.com, pooled across two recent quarters, outlier-flagged rows excluded). No individual listing, agency name, or contact detail from that source appears anywhere in this product — only the aggregate statistic informs the anchor. The 4-quarter trend leading up to each anchor is a smooth, plausible synthetic progression, not the real per-quarter medians themselves, which turned out too noisy at that granularity to use directly (small per-quarter samples, real unit-consistency issues in the source data). Full methodology is in `scripts/seed.ts`'s comments.
+
 **Example rows** (Maitama, all four seeded quarters):
 ```json
-{ "district": 1, "quarter": "Q3 '25", "land": 372000, "residential": 347746, "qoq": null }
-{ "district": 1, "quarter": "Q4 '25", "land": 385000, "residential": 359916, "qoq": 3.5 }
-{ "district": 1, "quarter": "Q1 '26", "land": 396000, "residential": 369994, "qoq": 2.9 }
-{ "district": 1, "quarter": "Q2 '26", "land": 412000, "residential": 384960, "qoq": 4.0 }
+{ "district": 1, "quarter": "Q4 '25", "land": 934908, "residential": 873640, "qoq": null }
+{ "district": 1, "quarter": "Q1 '26", "land": 970434, "residential": 906838, "qoq": 3.8 }
+{ "district": 1, "quarter": "Q2 '26", "land": 1007310, "residential": 941297, "qoq": 3.8 }
+{ "district": 1, "quarter": "Q3 '26", "land": 1045588, "residential": 977066, "qoq": 3.8 }
 ```
 24 rows total (6 districts × 4 quarters).
 
@@ -133,8 +135,8 @@ The core content type — the properties themselves.
   "category": "residential-land",
   "district": 6,
   "size": 718,
-  "pricePerSqm": 41000,
-  "price": 29438000,
+  "pricePerSqm": 16000,
+  "price": 11488000,
   "status": "published",
   "plan": false,
   "docs": { "cofo": "verified", "survey": "verified", "registry": "verified", "deed": "verified" },

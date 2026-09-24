@@ -46,15 +46,29 @@ function richText(text: string) {
   }
 }
 
-const QUARTERS = ["Q3 '25", "Q4 '25", "Q1 '26", "Q2 '26"]
+const QUARTERS = ["Q4 '25", "Q1 '26", "Q2 '26", "Q3 '26"]
 
+// Land figures below are fictional but no longer hand-guessed — each district's
+// current-quarter (Q3 '26) value is anchored to the real median ₦/sqm computed
+// from a real Abuja land-listings dataset (nigeriapropertycentre.com, pooled
+// across Q2+Q3 2026, outlier-flagged rows excluded, n=35–186 per district).
+// This is NOT real listing data being republished — no listing, agency name,
+// phone number, or ad copy from that dataset appears anywhere in this product;
+// only the aggregate price statistic informs the anchor. The 4-quarter trend
+// leading up to each anchor is a smooth, plausible synthetic progression built
+// backward from the anchor using each district's original QoQ growth-rate
+// assumption — the real per-quarter medians themselves were too noisy at this
+// granularity to use directly (see the review that produced this data, not
+// duplicated in comments here). `residential` uses each district's original
+// residential/land ratio applied to the new anchor, since the source dataset
+// is pure land and has no independent developed-residential benchmark.
 const DISTRICT_DEFS = [
-  { name: 'Maitama', tier: 'prime' as const, land: 412000, residential: 385000, trend: [372000, 385000, 396000, 412000] },
-  { name: 'Asokoro', tier: 'prime' as const, land: 398000, residential: 360000, trend: [365000, 378000, 388000, 398000] },
-  { name: 'Jabi', tier: 'suburban' as const, land: 210000, residential: 195000, trend: [186000, 194000, 202000, 210000] },
-  { name: 'Gwarinpa', tier: 'suburban' as const, land: 145000, residential: 138000, trend: [137000, 140000, 143000, 145000] },
-  { name: 'Lugbe', tier: 'suburban' as const, land: 68000, residential: 61000, trend: [58000, 61000, 64000, 68000] },
-  { name: 'Kuje', tier: 'suburban' as const, land: 38000, residential: 34000, trend: [32000, 34000, 36000, 38000] },
+  { name: 'Maitama', tier: 'prime' as const, land: 1045588, residential: 977066, trend: [934908, 970434, 1007310, 1045588] },
+  { name: 'Asokoro', tier: 'prime' as const, land: 784722, residential: 709799, trend: [720227, 741114, 762606, 784722] },
+  { name: 'Jabi', tier: 'suburban' as const, land: 501567, residential: 465741, trend: [444608, 462837, 481813, 501567] },
+  { name: 'Gwarinpa', tier: 'suburban' as const, land: 144444, residential: 137471, trend: [137726, 139930, 142169, 144444] },
+  { name: 'Lugbe', tier: 'suburban' as const, land: 49938, residential: 44797, trend: [42894, 45124, 47470, 49938] },
+  { name: 'Kuje', tier: 'suburban' as const, land: 15000, residential: 13421, trend: [12348, 13175, 14058, 15000] },
 ]
 
 const ADVISOR_DEFS = [
@@ -70,40 +84,44 @@ const DEVELOPER_DEFS = [
   { key: 'capitalreach', name: 'Capital Reach Properties', delivered: '11 estates delivered since 2013', onSchedule: '94% handovers on schedule' },
 ]
 
+// pricePerSqm below is rescaled from the original fictional value by the
+// same factor its district's PriceQuarters anchor moved (see DISTRICT_DEFS
+// above), so each listing stays plausibly close to its district average
+// rather than reading as randomly over/under-priced after the anchor update.
 const LISTING_DEFS = [
   {
     title: 'Diplomatic Close Plot', category: 'residential-land' as const, district: 'Maitama',
-    size: 512, pricePerSqm: 402000, plan: true, advisor: 'adaeze', developer: 'northbridge',
-    useCase: "A 512 sqm plot inside Maitama's diplomatic zone, positioned for a private residence or embassy-adjacent lease. Structures in this axis have cleared upward of ₦380,000 per sqm on resale within 24 months of a completed build.",
+    size: 512, pricePerSqm: 1020000, plan: true, advisor: 'adaeze', developer: 'northbridge',
+    useCase: "A 512 sqm plot inside Maitama's diplomatic zone, positioned for a private residence or embassy-adjacent lease. Structures in this axis have cleared upward of ₦950,000 per sqm on resale within 24 months of a completed build.",
     docs: { cofo: 'verified', survey: 'verified', registry: 'verified', deed: 'verified' } as const,
   },
   {
     title: 'Asokoro Hillside Residence', category: 'developed-residence' as const, district: 'Asokoro',
-    size: 465, pricePerSqm: 398000, plan: false, advisor: 'chidi', developer: 'crestline',
+    size: 465, pricePerSqm: 785000, plan: false, advisor: 'chidi', developer: 'crestline',
     useCase: 'A completed five-bedroom residence with staff quarters and a private drive, finished in 2023. Suited to owner-occupation or a diplomatic-adjacent lease — comparable Asokoro leases run ₦18m–₦24m per annum.',
     docs: { cofo: 'verified', survey: 'verified', registry: 'verified', deed: 'verified' } as const,
   },
   {
     title: 'Jabi Waterfront Commercial Plot', category: 'commercial-plot' as const, district: 'Jabi',
-    size: 323, pricePerSqm: 198000, plan: true, advisor: 'ifeoma', developer: 'lakeview',
+    size: 323, pricePerSqm: 473000, plan: true, advisor: 'ifeoma', developer: 'lakeview',
     useCase: 'Fronting the Jabi Lake axis with retail and hospitality precedent nearby. Registry search on the parent title is underway — we do not advise a deposit until it clears.',
     docs: { cofo: 'verified', survey: 'verified', registry: 'progress', deed: 'pending' } as const,
   },
   {
     title: 'Gwarinpa Family Estate Plot', category: 'residential-land' as const, district: 'Gwarinpa',
-    size: 644, pricePerSqm: 142000, plan: true, advisor: 'adaeze', developer: 'northbridge',
+    size: 644, pricePerSqm: 141000, plan: true, advisor: 'adaeze', developer: 'northbridge',
     useCase: 'A corner plot in a gated Gwarinpa estate with existing road and drainage infrastructure already in place. Common among first-time diaspora buyers building toward retirement or rental income.',
     docs: { cofo: 'verified', survey: 'verified', registry: 'verified', deed: 'verified' } as const,
   },
   {
     title: 'Lugbe Growth Corridor Plot', category: 'residential-land' as const, district: 'Lugbe',
-    size: 328, pricePerSqm: 58000, plan: true, advisor: 'chidi', developer: 'capitalreach',
+    size: 328, pricePerSqm: 43000, plan: true, advisor: 'chidi', developer: 'capitalreach',
     useCase: "Positioned along the airport road growth corridor, ahead of the district's five-year infrastructure plan. Entry-level pricing for investors building a first Abuja position.",
     docs: { cofo: 'verified', survey: 'verified', registry: 'verified', deed: 'verified' } as const,
   },
   {
     title: 'Kuje Frontier Acreage', category: 'residential-land' as const, district: 'Kuje',
-    size: 718, pricePerSqm: 41000, plan: false, advisor: 'ifeoma', developer: 'capitalreach',
+    size: 718, pricePerSqm: 16000, plan: false, advisor: 'ifeoma', developer: 'capitalreach',
     useCase: "A larger frontier plot suited to a phased self-build or land-banking position ahead of Kuje's projected road expansion.",
     docs: { cofo: 'verified', survey: 'verified', registry: 'verified', deed: 'verified' } as const,
   },

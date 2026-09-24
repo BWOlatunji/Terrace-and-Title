@@ -48,5 +48,10 @@ next-env.d.ts
 # Claude Code local session state — tool config, not project source
 /.claude/
 
+# Real third-party scraped data (RE-MIS source data) — does not belong to
+# this project, used locally only to inform fictional sample-data figures,
+# never to be committed or redistributed. See docs/database-reference.md.
+/data/
+
 .vercel
 .env*

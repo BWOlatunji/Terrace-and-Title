@@ -16,7 +16,7 @@ export default function HomePlaceholder() {
         quarter. Invest with confidence. Own with pride.
       </p>
       <div className="flex items-center gap-4 rounded border border-hairline-10 bg-mist px-4 py-3 font-mono text-sm text-navy">
-        <span>₦412,000</span>
+        <span>₦1,045,588</span>
         <span className="text-green">+3.8%</span>
       </div>
     </main>
