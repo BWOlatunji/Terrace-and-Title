@@ -22,13 +22,13 @@ Status values used below: **Not started** (everything, currently — nothing has
 
 | ID | Item | Notes | Size | Status |
 |---|---|---|---|---|
-| PBI-001 | Scaffold the Next.js + Payload CMS application, connected to a Neon Postgres database | Per `docs/walkthrough-for-developer.md` Section 3–4 | Not yet sized | Not started |
-| PBI-002 | Configure the Tailwind theme directly from the design tokens in `docs/design-handoff.md` Section 1 | Colors, type scale, the single 2px radius, spacing scale | Not yet sized | Not started |
-| PBI-003 | Define core Payload collection schemas: Listings, Districts, PriceQuarters, Advisors, Developers, Articles, Inquiries, Media, Users | Underlies nearly every later epic — see rationale doc for the specific downstream dependency this unblocks early | Not yet sized | Not started |
-| PBI-004 | Set up the Vercel deployment pipeline with preview environments | Account owned by Maryam Aderinto (`docs/project-overview.md` §10) | Not yet sized | Not started |
-| PBI-005 | Configure the Cloudflare R2 storage adapter for the Media collection | Supports FR-312 | Not yet sized | Not started |
-| PBI-006 | Configure the Resend integration for transactional email | Supports FR-406 | Not yet sized | Not started |
-| PBI-007 | Configure Plausible analytics, including the two custom goal events | Supports FR-408 | Not yet sized | Not started |
+| PBI-001 | Scaffold the Next.js + Payload CMS application, connected to a Neon Postgres database | Per `docs/walkthrough-for-developer.md` Section 3–4 | Not yet sized | Done |
+| PBI-002 | Configure the Tailwind theme directly from the design tokens in `docs/design-handoff.md` Section 1 | Colors, type scale, the single 2px radius, spacing scale | Not yet sized | Done |
+| PBI-003 | Define core Payload collection schemas: Listings, Districts, PriceQuarters, Advisors, Developers, Articles, Inquiries, Media, Users | Underlies nearly every later epic — see rationale doc for the specific downstream dependency this unblocks early. Verified against real seeded data — see `docs/database-reference.md` | Not yet sized | Done |
+| PBI-004 | Set up the Vercel deployment pipeline with preview environments | Production deploys confirmed working (live at `terraceandtitle.com`, auto-deploys on push to `main`). Preview-deployment behavior on non-main branches has not been specifically tested | Not yet sized | Mostly done |
+| PBI-005 | Configure the Cloudflare R2 storage adapter for the Media collection | Supports FR-312. Media currently uses local disk storage, which does not persist across Vercel deploys — worth prioritizing before any real photo gets uploaded | Not yet sized | Not started |
+| PBI-006 | Configure the Resend integration for transactional email | Supports FR-406 — blocks real confirmation emails on every lead-capture form | Not yet sized | Not started |
+| PBI-007 | Configure Plausible analytics, including the two custom goal events | Supports FR-408 — blocks SM-1/SM-2 measurement entirely until wired up | Not yet sized | Not started |
 
 ---
 
@@ -77,6 +77,8 @@ Status values used below: **Not started** (everything, currently — nothing has
 ## Epic E — Content Operations Enablement (Admin)
 
 *Pulled forward ahead of the public-facing Opportunities/Listing Detail pages on purpose — see rationale doc.*
+
+**Note on current status:** Payload generates a full create/edit UI for every collection automatically once it's defined — which happened as part of PBI-003. So basic CRUD on Listings, Districts, etc. already works today at `/admin`, without any of the items below being separately built. What's still genuinely outstanding is only **PBI-043**, the custom bulk-entry grid — without it, updating a quarter's pricing means editing six separate district records one at a time in Payload's default UI, which works but isn't the smooth workflow this was designed to be for Bilikisu.
 
 | ID | Item | FR refs | Size | Status |
 |---|---|---|---|---|
