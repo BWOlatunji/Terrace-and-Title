@@ -201,6 +201,7 @@ A full, jargon-free glossary for anyone touching the code is in `docs/walkthroug
 |---|---|---|
 | `docs/walkthrough-for-developer.md` | In-house developer | Jargon-free, step-by-step technical onboarding to the stack and codebase |
 | `docs/design-handoff.md` | External designer | Full design-token reference and screen-by-screen spec for rebuilding the UI in Figma |
+| `docs/database-reference.md` | In-house developer, anyone querying the data | The 9-table Postgres schema with real example rows, and where to browse or query it (Neon console, `/admin`) |
 | `design-rationale.md` | Anyone | The *why* behind the visual design system |
 | `index.html` | Anyone | The current clickable prototype — open directly in a browser |
 | `tech stack.docx` | Anyone | The original source document naming the technology choices summarized in Section 6 |
