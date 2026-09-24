@@ -8,6 +8,8 @@
 
 An ordered list without stated reasoning is just an opinion with extra confidence. Ordering the Product Backlog is one of the Product Owner's real accountabilities — not a mechanical sort, a judgment call — and judgment calls should be inspectable, not asserted. Everything below is the reasoning that produced the order in `docs/product-owner/product-backlog.md`. **Where the incoming Product Owner's judgment differs from mine, the backlog should change, not this document's reasoning be forced to fit it.** Treat disagreement with any of this as a normal, expected outcome of a second qualified person looking at the same tradeoffs — not as an error to correct back to what's written here.
 
+**Note on the v1a/v1b split:** the epic-by-epic reasoning below was written for a single v1 release and still holds *within* v1a — Epics A through H are ordered the same way for the same reasons. What changed is that Epic A's R2/Resend/Plausible items (PBI-005–007) and parts of Epics B, C, G, and I moved to v1b rather than sitting at the tail of one long v1 list — see the Release column in `docs/product-owner/product-backlog.md` for exactly which items, and that document's intro section for why. This is a scope cut, not a re-ordering; nothing below needed to change to accommodate it.
+
 ---
 
 ## The four factors used to order this backlog

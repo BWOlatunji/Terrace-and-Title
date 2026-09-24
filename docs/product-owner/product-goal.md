@@ -36,6 +36,10 @@ There is deliberately no numeric target set for SM-1/SM-2 in this document. `doc
 
 Everything in the Client Portal module (`docs/FRD.md` Module 2, FR-201–FR-208) is explicitly not part of this goal. Building portal features before this goal is fulfilled would be solving a problem (retention/service for existing clients) before the goal that justifies having clients to serve in the first place has been proven out.
 
+### v1 is now split into two delivery milestones — the goal itself hasn't changed
+
+Mid-build, the decision was made to sequence v1 as **v1a (data demo)** followed by **v1b (full public launch)**, rather than one single release — see `docs/product-owner/product-backlog.md` for exactly which items moved where, and `docs/product-owner/open-questions.md` for the now-open question of what target date replaces the original single v1 date. This is a **delivery-sequencing decision, not a change to the Product Goal above**: none of the three fulfillment conditions (SM-1/SM-2 non-zero, SM-4 held a full quarter, no data-integrity open question unresolved) can actually be claimed met by v1a alone. v1a proves the site can *display* the data and *capture* a lead; it doesn't yet prove leads convert to advisor conversations reliably, since Resend (confirmation email) and Plausible (the SM-1/SM-2 measurement itself) are both deferred to v1b. Treat v1a as a real, useful checkpoint — genuinely worth demoing — not as the goal being met early.
+
 ---
 
 ## Next Product Goal (Phase 2) — not yet active

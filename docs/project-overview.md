@@ -43,7 +43,11 @@ Young professionals, Nigerians in the diaspora, business owners, and corporate i
 
 The project is split into two phases, decided specifically so that the harder engineering work (client authentication and per-client data access) happens once there is real client data to build and test against, rather than against fixtures.
 
-### v1 — Data-led marketing site (building now)
+### v1 — Data-led marketing site (building now), split into v1a and v1b
+
+Partway through the build, with the scaffold live and seeded with sample data but almost none of the real public pages built, v1 was split into two releases rather than held for one big-bang launch. Full reasoning and the item-by-item split live in `docs/product-owner/product-backlog.md`; the summary:
+
+**v1a — data demo.** Every screen that displays the seeded data, plus a working (if not yet email-confirmed) lead-capture form:
 
 | Screen | Notes |
 |---|---|
@@ -52,9 +56,17 @@ The project is split into two phases, decided specifically so that the harder en
 | Listing Detail | Full price/documentation/advisor detail per listing |
 | Market Intelligence Hub | Full quarterly district pricing table + report request flow |
 | Price Check tool | Self-serve district price estimator |
-| Contact / Book an Inspection | Lead capture, including virtual-inspection booking |
-| About, Services | Supporting brand/credibility pages |
-| Portal Login screen | Exists as a stub in v1 (see below) |
+| Contact / Book an Inspection | Lead capture, including virtual-inspection booking. Ships **without** Resend (deferred to v1b) — submissions save and are visible in `/admin`, but no confirmation email goes out yet; staff check manually in the interim. A minimal privacy/data-use notice ships alongside it, ahead of the full legal Terms/Privacy pages, since the site is already fully public with no password gate |
+| Portal Login screen | Exists as a stub (see Phase 2 below) |
+
+**v1b — full public launch.** Cloudflare R2, Resend, and Plausible (all three deferred deliberately, not overlooked), plus:
+
+| Screen / item | Notes |
+|---|---|
+| About, Services | Supporting brand/credibility pages — no live data, don't serve the "demo the data" goal directly |
+| Real content | Real advisor names/photos, real listings, real developer partnerships, replacing every placeholder |
+| Newsletter capture | Footer email capture — also blocked on an unresolved product decision, see `docs/product-owner/open-questions.md` |
+| Full legal review | Terms of Use, Privacy Policy, and disclaimer copy, via existing counsel |
 
 ### Phase 2 — Client portal (fast-follow, no committed start date yet)
 
@@ -86,9 +98,11 @@ Dates are intentionally not fixed below — see [Open Questions](#8-open-questio
 | Phasing decision (v1 public site → Phase 2 portal) | ✅ Complete |
 | Project documentation package (developer, designer, stakeholder) | ✅ Complete (this document is the third of three) |
 | Figma recreation of the design system | ⏳ Not started — owned by the external designer, using `docs/design-handoff.md` |
-| Application scaffold (Next.js + Payload + database) | ✅ Complete — Next.js 16 + Payload CMS 3, all 9 collections defined and migrated against a real Neon database (natively integrated via Vercel's Storage tab, unified billing), deployed to Vercel and live at `terraceandtitle.com` |
-| v1 build (public marketing site, content-populated) | ⏳ Not started |
-| v1 launch | ⏳ Not started — **target: within 8 weeks of this document (~mid-October 2026)**, launching with the placeholder image system rather than waiting on real photography |
+| Application scaffold (Next.js + Payload + database) | ✅ Complete — Next.js 16 + Payload CMS 3, all 9 collections defined and migrated against a real Neon database (natively integrated via Vercel's Storage tab, unified billing), deployed to Vercel and live at `terraceandtitle.com`, seeded with sample data (`docs/database-reference.md`) |
+| v1a build (data-demo screens — Home, Opportunities, Listing Detail, Market Hub, Price Check, Contact) | ⏳ Not started |
+| v1a launch | ⏳ Not started — **target date open**, see `docs/product-owner/open-questions.md`. The original single-v1 target (~mid-October 2026) no longer applies cleanly to a split release |
+| v1b build (R2, Resend, Plausible, About/Services, real content, full legal review) | ⏳ Not started |
+| v1b launch (full public launch) | ⏳ Not started — target date open, same as above |
 | Phase 2 (client portal) | ⏳ Not started — trigger condition set: begins once v1 has produced a meaningful volume of real inquiries/deals, not on a fixed calendar date (see Section 4) |
 
 ---
@@ -132,6 +146,8 @@ Nothing has been deployed publicly yet, and no real backend, database, or CMS ex
 | Phase 2 (portal) begins on an activity threshold, not a fixed calendar date | Matches the original reasoning for phasing the portal at all — it should be built once there's real client data to build and test against |
 | Legal review of disclaimer copy and Terms/Privacy pages goes through Terrace & Title's existing counsel | Avoids launching with legally unvetted language on a tool that produces a valuation estimate |
 | Database stays on Neon (queried in-house after `terraceandtitle.com`'s domain question raised the alternative) rather than switching to Prisma Postgres | Neon's branching feature is more mature and is the specific reason it was named in the original tech stack; Payload's Postgres adapter talks to it directly with no ORM-specific tooling needed, unlike Prisma Postgres which is built around the Prisma ecosystem this stack doesn't otherwise use. Provisioned through Vercel's own Storage marketplace rather than a separate neon.tech account, so the "keep it under one roof" benefit that motivated the question is achieved without changing providers |
+| v1 split into v1a (data demo) and v1b (full public launch); R2, Resend, and Plausible deferred to v1b | None of the three block having a real, demoable site — R2 only matters once real photography exists (already deferred), Plausible has nothing to measure until pages exist, and Resend is the one real tradeoff, accepted deliberately: the Contact form ships in v1a without confirmation emails, staff check `/admin` manually in the interim |
+| A minimal privacy/data-use notice ships in v1a, ahead of the full legal Terms/Privacy pages | The Contact form collects real name/phone/email on a domain that's already fully public with no password gate — full legal review (PBI-080/081) is v1b-gated and too slow to hold the whole demo for, but launching a live PII-collecting form with zero privacy disclosure isn't acceptable either |
 
 ---
 
